@@ -17,7 +17,7 @@ function MainLayout() {
     <Sidebar />
 
     {/* Main Content (Dashboard / Pages) */}
-    <div className="flex-1 pt-20 pl-70 overflow-auto">
+    <div className="flex-1  mt-22 ml-68 mr-2 overflow-auto rounded-xl overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
       <Outlet />
     </div>
 

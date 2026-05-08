@@ -7,6 +7,7 @@ import Calendar from "./pages/Calendar"
 import Notes from "./pages/Notes"
 import Analytics from "./pages/Analytics"
 import Settings from "./pages/Settings"
+import Logout from "./pages/Logout"
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
-      </Routes>
+       
+      </Routes> <Logout />
     </BrowserRouter>
   )
 }
