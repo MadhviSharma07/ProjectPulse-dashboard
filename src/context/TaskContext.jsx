@@ -3,28 +3,34 @@ import { createContext, useContext, useState, useEffect } from "react";
 const TaskContext = createContext();
 
 export function TaskProvider({ children }) {
-  const [tasks, setTasks] = useState([]);
-
-  // 🔹 Load tasks from localStorage (on app start)
-useEffect(() => {
+  const [tasks, setTasks] = useState(() => {
   try {
     const savedTasks = JSON.parse(localStorage.getItem("tasks"));
 
     if (Array.isArray(savedTasks)) {
-      const formattedTasks = savedTasks.map((task) => ({
+      return savedTasks.map((task) => ({
         ...task,
         createdAt: new Date(task.createdAt),
         completedAt: task.completedAt
           ? new Date(task.completedAt)
           : null,
       }));
-
-      setTasks(formattedTasks);
     }
+
+    return [];
   } catch (err) {
     console.error(err);
+    return [];
   }
-}, []);
+});
+  // 🔹 Load tasks from localStorage (on app start)
+useEffect(() => {
+  try {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  } catch (err) {
+    console.error("Error saving tasks:", err);
+  }
+}, [tasks]);
 
   // 🔹 Save tasks to localStorage (whenever tasks change)
  useEffect(() => {

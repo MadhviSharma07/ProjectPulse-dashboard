@@ -123,14 +123,8 @@ function Projects() {
             </button>
 
             <div className="flex justify-end gap-2">
-              <button onClick={() => setShowModal(false)}>Cancel</button>
-
-              <button
-                onClick={handleSave}
-                className="bg-purple-500 text-white px-3 py-1 rounded"
-              >
-                Save
-              </button>
+              <Button onClick={() => setShowModal(false)} content="Cancel" className=" bg-zinc-700 hover:bg-zinc-800" />
+              <Button onClick={handleSave} content="Save" />
             </div>
           </div>
         </div>

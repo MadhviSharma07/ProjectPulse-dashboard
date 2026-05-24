@@ -2,19 +2,24 @@ import React, { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import Button from "../Other components/Button";
 import useTasks  from "../context/TaskContext"; 
+import {useEffect} from "react";
+import { MdEdit } from "react-icons/md";
 
 function Tasks() {
-  const {tasks , addTask, deleteTask, toggleTaskStatus} = useTasks(); // Custom hook for task management
-
+  const {tasks , updateTask, addTask, deleteTask, toggleTaskStatus} = useTasks(); // Custom hook for task management
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editPriority, setEditPriority] = useState("high");
+  const [editDeadline, setEditDeadline] = useState("");
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
-
   const [showInput, setShowInput] = useState(false);
 
   // ✅ Form states
   const [title, setTitle] = useState("");
   const [project, setProject] = useState("");
-  const [priority, setPriority] = useState("Medium");
+  const [priority, setPriority] = useState("high");
   const [dueDate, setDueDate] = useState("");
 
   // ✅ Add Task
@@ -33,26 +38,47 @@ function Tasks() {
     // reset
     setTitle("");
     setProject("");
-    setPriority("Medium");
+    setPriority("high");
     setDueDate("");
     setShowInput(false);
   };
 
+  // ✅ Edit Task
+  const handleEditClick = (task) => {
+    setSelectedTask(task);
+    setShowEditModal(true);
+  };
+
+    useEffect(() => {
+      if (selectedTask) {
+        setEditTitle(selectedTask.title);
+        setEditPriority(selectedTask.priority || "high");
+        setEditDeadline(
+          selectedTask.dueDate ? selectedTask.dueDate.split("T")[0] : "",
+        );
+      }
+    }, [selectedTask]);
+  
+    // handle update
+    const handleUpdate = () => {
+      updateTask({
+        ...selectedTask,
+        title: editTitle,
+        priority: editPriority,
+        dueDate: editDeadline, //
+      });
+  
+      setShowEditModal(false);
+      setSelectedTask(null); //
+  };
  
 
   // ✅ Filter + Search
   const filteredTasks = tasks.filter((task) => {
-    if (filter === "Completed" && !task.status=== "completed") return false;
-    if (filter === "Pending" && task.status=== "completed") return false;
+    if (filter === "Completed" && task.status !== "completed") return false;
+    if (filter === "Pending" && task.status !== "pending") return false;
     return task.title.toLowerCase().includes(search.toLowerCase());
   });
-
-  // ✅ Priority Color
-  const getPriorityColor = (priority) => {
-    if (priority === "High") return "text-red-500";
-    if (priority === "Medium") return "text-yellow-500";
-    return "text-green-500";
-  };
 
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
@@ -123,19 +149,14 @@ function Tasks() {
               onChange={(e) => setPriority(e.target.value)}
               className="w-full p-2 border mb-4"
             >
-              <option>High</option>
-              <option>Medium</option>
-              <option>Low</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
             </select>
 
             <div className="flex justify-end gap-3">
-              <button onClick={() => setShowInput(false)}>Cancel</button>
-              <button
-                onClick={handleAddTask}
-                className="bg-purple-500 text-white px-4 py-2 rounded"
-              >
-                Add
-              </button>
+             <Button onClick={() => setShowInput(false)} content="Cancel" className=" bg-zinc-700 hover:bg-zinc-800" />
+             <Button onClick={handleAddTask} content="Add" />
             </div>
           </div>
         </div>
@@ -175,9 +196,23 @@ function Tasks() {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                  <span className={getPriorityColor(task.priority)}>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            task.priority === "high"
+                              ? "bg-red-100 text-red-800"
+                              : task.priority === "medium"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-green-100 text-green-800"
+                          }`}>
                     {task.priority}
                   </span>
+                        <MdEdit
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditClick(task);
+                          }}
+                          className="text-lg text-gray-500 hover:text-blue-500 cursor-pointer"
+                        />
+
 
                   <MdDelete
                     onClick={() => deleteTask(task.id)}
@@ -189,6 +224,51 @@ function Tasks() {
           </ul>
         )}
       </div>
+       {showEditModal && (
+              <div className="fixed inset-0 bg-black/30 flex justify-center items-center">
+                <div className="bg-white p-6 rounded-xl w-96">
+                  <h2 className="text-lg font-semibold mb-4">Edit Task</h2>
+
+                  {/* Title */}
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    className="w-full p-2 border rounded mb-3"
+                  />
+
+                  {/* Priority */}
+                  <select
+                    value={editPriority}
+                    onChange={(e) => setEditPriority(e.target.value)}
+                    className="w-full p-2 border rounded mb-3"
+                  >
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+
+                  {/* Deadline */}
+                  <input
+                    type="date"
+                    value={editDeadline}
+                    onChange={(e) => setEditDeadline(e.target.value)}
+                    className="w-full p-2 border rounded mb-3"
+                  />
+
+                  {/* Buttons */}
+                  <div className="flex justify-end gap-2">
+                  <Button onClick={() => setShowEditModal(false)} content="Cancel" />
+
+                  <Button
+                    onClick={handleUpdate}
+                    content="Update"
+                    className="bg-blue-500 text-white"
+                  />
+                  </div>
+                </div>
+              </div>
+            )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Button from "../Other components/Button";
 
 function Notes() {
   const [notes, setNotes] = useState([]);
@@ -24,12 +25,12 @@ function Notes() {
 
     if (currentNote.id) {
       // Edit
-      setNotes(notes.map(n => n.id === currentNote.id ? currentNote : n));
+      setNotes(notes.map((n) => (n.id === currentNote.id ? currentNote : n)));
     } else {
       // Add
       setNotes([
         ...notes,
-        { ...currentNote, id: Date.now(), createdAt: new Date() }
+        { ...currentNote, id: Date.now(), createdAt: new Date() },
       ]);
     }
 
@@ -39,18 +40,18 @@ function Notes() {
 
   // Delete Note
   const deleteNote = (id) => {
-    setNotes(notes.filter(n => n.id !== id));
+    setNotes(notes.filter((n) => n.id !== id));
   };
 
   // Filter notes
-  const filteredNotes = notes.filter(note =>
-    note.title.toLowerCase().includes(search.toLowerCase()) ||
-    note.content.toLowerCase().includes(search.toLowerCase())
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(search.toLowerCase()) ||
+      note.content.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
-
       {/* 🔝 Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-800">Notes</h1>
@@ -64,21 +65,13 @@ function Notes() {
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          <button
-            onClick={() => {
-              setCurrentNote({ title: "", content: "" });
-              setShowModal(true);
-            }}
-            className="bg-purple-500 text-white px-4 py-2 rounded-lg"
-          >
-            + Add Note
-          </button>
+          <Button onClick={() => setShowModal(true)} content="Add Note" />
         </div>
       </div>
 
       {/* 🧾 Notes Grid */}
       <div className="grid grid-cols-3 gap-6">
-        {filteredNotes.map(note => (
+        {filteredNotes.map((note) => (
           <div
             key={note.id}
             className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition"
@@ -96,9 +89,9 @@ function Notes() {
             </p>
 
             <div className="flex justify-end gap-3 mt-4">
-              <button 
-              onClick={() => setSelectedNote(note)}
-              className="text-green-500 text-sm"
+              <button
+                onClick={() => setSelectedNote(note)}
+                className="text-green-500 text-sm"
               >
                 View
               </button>
@@ -152,52 +145,39 @@ function Notes() {
             />
 
             <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-3 py-1 text-gray-500"
-              >
-                Cancel
-              </button>
+              <Button onClick={() => setShowModal(false)} content="Cancel" className=" bg-zinc-700 hover:bg-zinc-800" />
 
-              <button
-                onClick={handleSave}
-                className="bg-purple-500 text-white px-4 py-2 rounded-lg"
-              >
-                Save
-              </button>
+              <Button onClick={handleSave} content="Save" />
             </div>
           </div>
         </div>
       )}
       {selectedNote && (
-  <div className="fixed inset-0 bg-black/30 flex items-center justify-center  ">
-    <div className="bg-white p-6 rounded-2xl w-[500px] max-h-[80vh] overflow-hidden">
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center  ">
+          <div className="bg-white p-6 rounded-2xl w-[500px] max-h-[80vh] overflow-hidden">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              {selectedNote.title}
+            </h2>
 
-      <h2 className="text-xl font-semibold text-gray-800 mb-2">
-        {selectedNote.title}
-      </h2>
+            <p className="text-xs text-gray-400 mb-4">
+              {new Date(selectedNote.createdAt).toLocaleString()}
+            </p>
 
-      <p className="text-xs text-gray-400 mb-4">
-        {new Date(selectedNote.createdAt).toLocaleString()}
-      </p>
+            <p className="text-gray-700 whitespace-normal">
+              {selectedNote.content}
+            </p>
 
-      <p className="text-gray-700 whitespace-normal">
-        {selectedNote.content}
-      </p>
-
-      <div className="flex justify-end mt-6">
-        <button
-          onClick={() => setSelectedNote(null)}
-          className="bg-purple-500 text-white px-4 py-2 rounded-lg"
-        >
-          Close
-        </button>
-      </div>
-
-    </div>
-  </div>
-)}
-
+            <div className="flex justify-end mt-6">
+              <button
+                onClick={() => setSelectedNote(null)}
+                className="bg-purple-500 text-white px-4 py-2 rounded-lg"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

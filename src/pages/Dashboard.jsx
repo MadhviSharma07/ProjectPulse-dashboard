@@ -234,11 +234,11 @@ const pendingProjects = totalProjects - completedProjects;
         ))}
       </div>
 
-      {/* 🔹 Main Grid */}
+      {/* Main Grid */}
       <div className="grid grid-cols-3 gap-6">
         {/* LEFT SIDE */}
         <div className="col-span-2 space-y-6">
-          {/* 🟣 Today Focus */}
+          {/*  Today Focus */}
           <div className="bg-white p-6 rounded-2xl shadow-sm ">
             <div className="flex justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-3 ">
@@ -411,7 +411,7 @@ const pendingProjects = totalProjects - completedProjects;
             )}
           </div>
 
-          {/* 📊 Chart Section */}
+          {/* Chart Section */}
           <div className="bg-white pr-6 p-2 rounded-2xl shadow-sm">
             <h2 className="text-lg font-semibold mb-4 text-gray-800 pl-5 pt-5">
               Productivity
@@ -443,15 +443,15 @@ const pendingProjects = totalProjects - completedProjects;
 
         {/* RIGHT SIDE */}
         <div className="space-y-6">
-          {/* ⚡ Quick Add */}
+          {/* Quick Add */}
 
-          {/* ⏰ Deadlines */}
+          {/* Deadlines */}
           <div className="bg-white p-6 rounded-2xl shadow-sm">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">
               Deadlines
             </h2>
 
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-3 text-sm h-15 pr-3 overflow-y-auto">
               {upcomingTasks.length === 0 ? (
                 <p className="text-gray-400">No upcoming deadlines</p>
               ) : (
@@ -483,9 +483,9 @@ const pendingProjects = totalProjects - completedProjects;
               Projects
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-4 pr-4 h-40 overflow-y-auto">
               {projectData.length === 0 ? (
-                <p className="text-gray-400 text-sm">No projects yet</p>
+                <p className="text-gray-400 text-sm ">No projects yet</p>
               ) : (
                 projectData.map((proj, i) => {
                   const borderColor =
@@ -498,7 +498,7 @@ const pendingProjects = totalProjects - completedProjects;
                   return (
                     <div
                       key={i}
-                      className="flex items-center justify-between p-1 rounded-xl hover:bg-purple-50 transition"
+                      className="flex items-center justify-between p-1 rounded-xl hover:bg-purple-50 transition "
                     >
                       {/* LEFT */}
                       <div>
@@ -532,7 +532,7 @@ const pendingProjects = totalProjects - completedProjects;
             </div>
           </div>
 
-          {/* 🧠 Insights */}
+          {/* Insights */}
           <div className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-2xl shadow">
             <h2 className="text-lg font-semibold mb-2">Insights</h2>
 

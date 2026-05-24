@@ -7,14 +7,14 @@ function Calendar() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [newTask, setNewTask] = useState("");
 
-  // 🔹 Task State (date-based)
+  //  Task State (date-based)
   const { tasks, addTask, toggleTaskStatus } = useTasks();
 
   const normalizeDate = (date) => {
     return new Date(date).toISOString().split("T")[0];
   };
 
-  // 🔹 Helpers
+  //  Helpers
   const formatDate = (y, m, d) =>
     `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 
@@ -29,7 +29,7 @@ function Calendar() {
   const getFirstDay = (date) =>
     new Date(date.getFullYear(), date.getMonth(), 1).getDay();
 
-  // 🔹 Navigation
+  //  Navigation
   const prevMonth = () =>
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1),
@@ -40,7 +40,7 @@ function Calendar() {
       new Date(currentDate.getFullYear(), currentDate.getMonth() + 1),
     );
 
-  // 🔹 Add Task
+  //  Add Task
   const addTaskHandler = () => {
     if (!newTask.trim() || !selectedDate) return;
 
@@ -52,7 +52,7 @@ function Calendar() {
 
     setNewTask("");
   };
-  // 🔹 Priority Color
+  // Priority Color
   const getDotColor = (task) => {
     if (task.status === "completed") return "bg-green-500";
     if (task.priority === "high") return "bg-red-500";
@@ -64,7 +64,7 @@ function Calendar() {
   const completedTasksByDate = {};
 
   tasks.forEach((task) => {
-    // 🔹 Created Tasks
+    // Created Tasks
     if (task.createdAt) {
       const createdKey = normalizeDate(task.createdAt);
 
@@ -75,7 +75,7 @@ function Calendar() {
       createdTasksByDate[createdKey].push(task);
     }
 
-    // 🔹 Due Tasks
+    // Due Tasks
     if (task.dueDate) {
       const dueKey = normalizeDate(task.dueDate);
 
@@ -86,7 +86,7 @@ function Calendar() {
       dueTasksByDate[dueKey].push(task);
     }
 
-    // 🔹 Completed Tasks
+    //  Completed Tasks
     if (task.completedAt) {
       const completedKey = normalizeDate(task.completedAt);
 
@@ -97,7 +97,7 @@ function Calendar() {
       completedTasksByDate[completedKey].push(task);
     }
   });
-  // 🔹 Calendar Grid
+  //  Calendar Grid
   const renderDays = () => {
     const days = [];
     const totalDays = getDaysInMonth(currentDate);
@@ -163,7 +163,7 @@ function Calendar() {
 
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
-      {/* 🔝 Header */}
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Calendar</h1>
 
@@ -196,7 +196,7 @@ function Calendar() {
         </div>
       </div>
 
-      {/* 🧩 Layout */}
+      {/*  Layout */}
       <div className="grid grid-cols-4 gap-6">
         {/* 📅 Calendar */}
         <div className="col-span-3">
@@ -209,10 +209,9 @@ function Calendar() {
           <div className="grid grid-cols-7 gap-3">{renderDays()}</div>
         </div>
 
-        {/* 📌 Sidebar */}
+        {/* Sidebar */}
         <div className="bg-white p-5 rounded-2xl shadow-sm sticky top-6 h-fit">
           <div className="mb-5 border-b pb-4">
-
             <h2 className="text-xl font-bold text-gray-800">
               {selectedDate
                 ? new Date(selectedDate).toLocaleDateString("en-US", {
@@ -230,97 +229,89 @@ function Calendar() {
             )}
           </div>
           {/* Tasks */}
-         <div className="space-y-5">
+          <div className="space-y-5">
+            {/* Created Tasks */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
 
-  {/* Created Tasks */}
-  <div>
-    <div className="flex items-center gap-2 mb-2">
-      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                <h3 className="text-sm font-medium text-gray-600">Created</h3>
+              </div>
 
-      <h3 className="text-sm font-medium text-gray-600">
-        Created
-      </h3>
-    </div>
+              <div className="space-y-2">
+                {(createdTasksByDate[selectedDate] || []).map((task) => (
+                  <div
+                    key={task.id}
+                    className="bg-gray-50 rounded-xl px-3 py-2 text-sm text-gray-700"
+                  >
+                    {task.title}
+                  </div>
+                ))}
+              </div>
+            </div>
 
-    <div className="space-y-2">
-      {(createdTasksByDate[selectedDate] || []).map((task) => (
-        <div
-          key={task.id}
-          className="bg-gray-50 rounded-xl px-3 py-2 text-sm text-gray-700"
-        >
-          {task.title}
-        </div>
-      ))}
-    </div>
-  </div>
+            {/* Due Tasks */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-purple-400"></span>
 
-  {/* Due Tasks */}
-  <div>
-    <div className="flex items-center gap-2 mb-2">
-      <span className="w-2 h-2 rounded-full bg-purple-400"></span>
+                <h3 className="text-sm font-medium text-gray-600">Scheduled</h3>
+              </div>
 
-      <h3 className="text-sm font-medium text-gray-600">
-        Scheduled
-      </h3>
-    </div>
+              <div className="space-y-2">
+                {(dueTasksByDate[selectedDate] || []).map((task) => (
+                  <div
+                    key={task.id}
+                    className="bg-purple-50 rounded-xl px-3 py-2 text-sm text-gray-700"
+                  >
+                    {task.title}
+                  </div>
+                ))}
+              </div>
+            </div>
 
-    <div className="space-y-2">
-      {(dueTasksByDate[selectedDate] || []).map((task) => (
-        <div
-          key={task.id}
-          className="bg-purple-50 rounded-xl px-3 py-2 text-sm text-gray-700"
-        >
-          {task.title}
-        </div>
-      ))}
-    </div>
-  </div>
+            {/* Completed Tasks */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-green-400"></span>
 
-  {/* Completed Tasks */}
-  <div>
-    <div className="flex items-center gap-2 mb-2">
-      <span className="w-2 h-2 rounded-full bg-green-400"></span>
+                <h3 className="text-sm font-medium text-gray-600">Completed</h3>
+              </div>
 
-      <h3 className="text-sm font-medium text-gray-600">
-        Completed
-      </h3>
-    </div>
-
-    <div className="space-y-2">
-      {(completedTasksByDate[selectedDate] || []).map((task) => (
-        <div
-          key={task.id}
-          className="bg-green-50 rounded-xl px-3 py-2 text-sm text-gray-400 line-through"
-        >
-          {task.title}
-        </div>
-      ))}
-    </div>
-  </div>
-
-</div>
+              <div className="space-y-2">
+                {(completedTasksByDate[selectedDate] || []).map((task) => (
+                  <div
+                    key={task.id}
+                    className="bg-green-50 rounded-xl px-3 py-2 text-sm text-gray-400 line-through"
+                  >
+                    {task.title}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
           {/* Add Task */}
           {selectedDate && (
             <div className="flex gap-2">
               <div className="mt-6 border-t pt-4">
-  <p className="text-sm font-medium text-gray-700 mb-3">
-    Schedule a Task
-  </p>
+                <p className="text-sm font-medium text-gray-700 mb-3">
+                  Schedule a Task
+                </p>
 
-  <input
-    value={newTask}
-    onChange={(e) => setNewTask(e.target.value)}
-    placeholder="What needs to be done?"
-    className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-  />
+                <input
+                  value={newTask}
+                  onChange={(e) => setNewTask(e.target.value)}
+                  placeholder="What needs to be done?"
+                  className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                />
 
-  <button
-    onClick={addTaskHandler}
-    className="w-full mt-3 bg-purple-500 hover:bg-purple-600 text-white py-2.5 rounded-xl transition"
-  >
-    Schedule Task
-  </button>
-</div>
+                <button
+                  onClick={addTaskHandler}
+                  className="w-full mt-3 bg-purple-500 hover:bg-purple-600 text-white py-2.5 rounded-xl transition"
+                >
+                  Schedule Task
+                </button>
+              </div>
             </div>
           )}
         </div>

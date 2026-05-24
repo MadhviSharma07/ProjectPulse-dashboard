@@ -1,4 +1,6 @@
 import React from "react";
+import useTasks from "../context/TaskContext";
+import { ResponsiveContainer } from "recharts";
 import {
   LineChart,
   Line,
@@ -14,26 +16,58 @@ import {
 } from "recharts";
 
 function Analytics() {
+  const { tasks } = useTasks();
   // 🔹 Sample Data (later connect with your real tasks)
-  const weeklyData = [
-    { day: "Mon", tasks: 2 },
-    { day: "Tue", tasks: 4 },
-    { day: "Wed", tasks: 3 },
-    { day: "Thu", tasks: 6 },
-    { day: "Fri", tasks: 5 },
-    { day: "Sat", tasks: 2 },
-    { day: "Sun", tasks: 1 },
-  ];
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const weeklyData = days.map((day, index) => {
+    const count = tasks.filter((task) => {
+      if (!task.completedAt) return false;
+
+      return new Date(task.completedAt).getDay() === index;
+    }).length;
+
+    return {
+      day,
+      tasks: count,
+    };
+  });
+
+  const completedTasks = tasks.filter(
+    (task) => task.status === "completed",
+  ).length;
+
+  const pendingTasks = tasks.filter((task) => task.status === "pending").length;
+
+  const totalTasks = tasks.length;
+
+  const productivity =
+    totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
   const taskStatus = [
-    { name: "Completed", value: 18 },
-    { name: "Pending", value: 7 },
+    { name: "Completed", value: completedTasks },
+    { name: "Pending", value: pendingTasks },
   ];
 
+  //insights
+  const mostProductiveDay = weeklyData.reduce((max, day) =>
+    day.tasks > max.tasks ? day : max,
+  );
+
+  //priorities of the tasks
   const priorityData = [
-    { name: "High", value: 5 },
-    { name: "Medium", value: 10 },
-    { name: "Low", value: 10 },
+    {
+      name: "High",
+      value: tasks.filter((t) => t.priority === "high").length,
+    },
+    {
+      name: "Medium",
+      value: tasks.filter((t) => t.priority === "medium").length,
+    },
+    {
+      name: "Low",
+      value: tasks.filter((t) => t.priority === "low").length,
+    },
   ];
 
   const COLORS = ["#8B5CF6", "#dbd2f0"]; // purple + gray
@@ -41,12 +75,9 @@ function Analytics() {
 
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
-
       {/* 🔝 Header */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Analytics
-        </h1>
+        <h1 className="text-2xl font-semibold text-gray-800">Analytics</h1>
 
         <select className="bg-white p-2 rounded-lg shadow-sm">
           <option>This Week</option>
@@ -57,10 +88,10 @@ function Analytics() {
       {/* 🔹 Stats Cards */}
       <div className="grid grid-cols-4 gap-6 mb-8">
         {[
-          { title: "Total Tasks", value: 25 },
-          { title: "Completed", value: 18 },
-          { title: "Pending", value: 7 },
-          { title: "Productivity", value: "72%" },
+          { title: "Total Tasks", value: totalTasks },
+          { title: "Completed", value: completedTasks },
+          { title: "Pending", value: pendingTasks },
+          { title: "Productivity", value: `${productivity}%` },
         ].map((card, i) => (
           <div
             key={i}
@@ -76,89 +107,77 @@ function Analytics() {
 
       {/* 🔹 Charts Layout */}
       <div className="grid grid-cols-3 gap-6 ">
-
         {/* LEFT */}
         <div className="col-span-2 space-y-6">
-
           {/* 📈 Line Chart */}
           <div className="bg-white p-6 rounded-2xl shadow-sm">
-            <h2 className="text-lg font-semibold mb-4">
-              Weekly Productivity
-            </h2>
+            <h2 className="text-lg font-semibold mb-4">Weekly Productivity</h2>
 
-            <LineChart width={600} height={250} data={weeklyData}>
-              <CartesianGrid strokeDasharray="2 2" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="tasks"
-                stroke="#8B5CF6"
-                strokeWidth={3}
-              />
-            </LineChart>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={weeklyData}>
+                <CartesianGrid strokeDasharray="2 2" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="tasks"
+                  stroke="#8B5CF6"
+                  strokeWidth={3}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
 
           {/* 📊 Bar Chart */}
           <div className="bg-white p-6 rounded-2xl shadow-sm">
-            <h2 className="text-lg font-semibold mb-4">
-              Task Priority
-            </h2>
+            <h2 className="text-lg font-semibold mb-4">Task Priority</h2>
 
-            <BarChart width={600} height={250} data={priorityData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="value">
-                {priorityData.map((entry, index) => (
-                  <Cell key={index} fill={BAR_COLORS[index]} />
-                ))}
-              </Bar>
-            </BarChart>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={priorityData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value">
+                  {priorityData.map((entry, index) => (
+                    <Cell key={index} fill={BAR_COLORS[index]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </div>
-
         </div>
 
         {/* RIGHT */}
         <div className="space-y-6">
-
           {/* 🥧 Pie Chart */}
           <div className="bg-white p-6 rounded-2xl shadow-sm">
-            <h2 className="text-lg font-semibold mb-4">
-              Task Status
-            </h2>
+            <h2 className="text-lg font-semibold mb-4">Task Status</h2>
 
-            <PieChart width={250} height={250}>
-              <Pie
-                data={taskStatus}
-                dataKey="value"
-                outerRadius={80}
-                label
-              >
-                {taskStatus.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index]} />
-                ))}
-              </Pie>
-              <Tooltip/>
-            </PieChart>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie data={taskStatus} dataKey="value" outerRadius={80} label>
+                  {taskStatus.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
 
           {/* 🧠 Insights */}
           <div className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-2xl shadow">
-            <h2 className="text-lg font-semibold mb-2">
-              Insights
-            </h2>
+            <h2 className="text-lg font-semibold mb-2">Insights</h2>
             <p className="text-sm">
-              You completed 18 tasks this week 🚀 <br />
-              Most productive day: Thursday <br />
+              You completed {completedTasks} tasks 🚀 <br />
+              Most productive day: {mostProductiveDay.day} <br />
+              Productivity score: {productivity}% <br />
               Keep up the momentum!
             </p>
           </div>
-
         </div>
-
       </div>
     </div>
   );
