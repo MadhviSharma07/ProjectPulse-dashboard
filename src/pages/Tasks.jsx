@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import Button from "../Other components/Button";
-import useTasks  from "../context/TaskContext"; 
-import {useEffect} from "react";
+import useTasks from "../context/TaskContext";
+import { useEffect } from "react";
 import { MdEdit } from "react-icons/md";
 
 function Tasks() {
-  const {tasks , updateTask, addTask, deleteTask, toggleTaskStatus} = useTasks(); // Custom hook for task management
+  const { tasks, updateTask, addTask, deleteTask, toggleTaskStatus } =
+    useTasks(); // Custom hook for task management
   const [selectedTask, setSelectedTask] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editTitle, setEditTitle] = useState("");
@@ -49,29 +50,28 @@ function Tasks() {
     setShowEditModal(true);
   };
 
-    useEffect(() => {
-      if (selectedTask) {
-        setEditTitle(selectedTask.title);
-        setEditPriority(selectedTask.priority || "high");
-        setEditDeadline(
-          selectedTask.dueDate ? selectedTask.dueDate.split("T")[0] : "",
-        );
-      }
-    }, [selectedTask]);
-  
-    // handle update
-    const handleUpdate = () => {
-      updateTask({
-        ...selectedTask,
-        title: editTitle,
-        priority: editPriority,
-        dueDate: editDeadline, //
-      });
-  
-      setShowEditModal(false);
-      setSelectedTask(null); //
+  useEffect(() => {
+    if (selectedTask) {
+      setEditTitle(selectedTask.title);
+      setEditPriority(selectedTask.priority || "high");
+      setEditDeadline(
+        selectedTask.dueDate ? selectedTask.dueDate.split("T")[0] : "",
+      );
+    }
+  }, [selectedTask]);
+
+  // handle update
+  const handleUpdate = () => {
+    updateTask({
+      ...selectedTask,
+      title: editTitle,
+      priority: editPriority,
+      dueDate: editDeadline, //
+    });
+
+    setShowEditModal(false);
+    setSelectedTask(null); //
   };
- 
 
   // ✅ Filter + Search
   const filteredTasks = tasks.filter((task) => {
@@ -117,7 +117,7 @@ function Tasks() {
 
       {/* ✅ MODAL */}
       {showInput && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-2xl w-[400px]">
             <h2 className="text-lg font-semibold mb-4">Add Task</h2>
 
@@ -155,8 +155,12 @@ function Tasks() {
             </select>
 
             <div className="flex justify-end gap-3">
-             <Button onClick={() => setShowInput(false)} content="Cancel" className=" bg-zinc-700 hover:bg-zinc-800" />
-             <Button onClick={handleAddTask} content="Add" />
+              <Button
+                onClick={() => setShowInput(false)}
+                content="Cancel"
+                className=" bg-zinc-700 hover:bg-zinc-800"
+              />
+              <Button onClick={handleAddTask} content="Add" />
             </div>
           </div>
         </div>
@@ -184,7 +188,9 @@ function Tasks() {
                   <div>
                     <p
                       className={
-                        task.status==="completed" ? "line-through text-gray-400" : ""
+                        task.status === "completed"
+                          ? "line-through text-gray-400"
+                          : ""
                       }
                     >
                       {task.title}
@@ -196,23 +202,24 @@ function Tasks() {
                 </div>
 
                 <div className="flex gap-4 items-center">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            task.priority === "high"
-                              ? "bg-red-100 text-red-800"
-                              : task.priority === "medium"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-green-100 text-green-800"
-                          }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      task.priority === "high"
+                        ? "bg-red-100 text-red-800"
+                        : task.priority === "medium"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-green-100 text-green-800"
+                    }`}
+                  >
                     {task.priority}
                   </span>
-                        <MdEdit
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEditClick(task);
-                          }}
-                          className="text-lg text-gray-500 hover:text-blue-500 cursor-pointer"
-                        />
-
+                  <MdEdit
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditClick(task);
+                    }}
+                    className="text-lg text-gray-500 hover:text-blue-500 cursor-pointer"
+                  />
 
                   <MdDelete
                     onClick={() => deleteTask(task.id)}
@@ -224,51 +231,54 @@ function Tasks() {
           </ul>
         )}
       </div>
-       {showEditModal && (
-              <div className="fixed inset-0 bg-black/30 flex justify-center items-center">
-                <div className="bg-white p-6 rounded-xl w-96">
-                  <h2 className="text-lg font-semibold mb-4">Edit Task</h2>
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/30 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-xl w-96">
+            <h2 className="text-lg font-semibold mb-4">Edit Task</h2>
 
-                  {/* Title */}
-                  <input
-                    type="text"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
-                  />
+            {/* Title */}
+            <input
+              type="text"
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              className="w-full p-2 border rounded mb-3"
+            />
 
-                  {/* Priority */}
-                  <select
-                    value={editPriority}
-                    onChange={(e) => setEditPriority(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
-                  >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                  </select>
+            {/* Priority */}
+            <select
+              value={editPriority}
+              onChange={(e) => setEditPriority(e.target.value)}
+              className="w-full p-2 border rounded mb-3"
+            >
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
 
-                  {/* Deadline */}
-                  <input
-                    type="date"
-                    value={editDeadline}
-                    onChange={(e) => setEditDeadline(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
-                  />
+            {/* Deadline */}
+            <input
+              type="date"
+              value={editDeadline}
+              onChange={(e) => setEditDeadline(e.target.value)}
+              className="w-full p-2 border rounded mb-3"
+            />
 
-                  {/* Buttons */}
-                  <div className="flex justify-end gap-2">
-                  <Button onClick={() => setShowEditModal(false)} content="Cancel" />
+            {/* Buttons */}
+            <div className="flex justify-end gap-2">
+              <Button
+                onClick={() => setShowEditModal(false)}
+                content="Cancel"
+              />
 
-                  <Button
-                    onClick={handleUpdate}
-                    content="Update"
-                    className="bg-blue-500 text-white"
-                  />
-                  </div>
-                </div>
-              </div>
-            )}
+              <Button
+                onClick={handleUpdate}
+                content="Update"
+                className="bg-blue-500 text-white"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

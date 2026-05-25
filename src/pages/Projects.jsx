@@ -73,28 +73,22 @@ function Projects() {
 
   // 🔍 SEARCH
   const filteredProjects = projects.filter((proj) =>
-    proj.name.toLowerCase().includes(search.toLowerCase())
+    proj.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
-
       {/* HEADER */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          My Projects
-        </h1>
+        <h1 className="text-2xl font-semibold text-gray-800">My Projects</h1>
         <Button content="New Project" onClick={() => setShowModal(true)} />
       </div>
 
       {/* MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl w-96">
-
-            <h2 className="text-lg font-semibold mb-4">
-              Create Project
-            </h2>
+            <h2 className="text-lg font-semibold mb-4">Create Project</h2>
 
             <input
               type="text"
@@ -123,7 +117,11 @@ function Projects() {
             </button>
 
             <div className="flex justify-end gap-2">
-              <Button onClick={() => setShowModal(false)} content="Cancel" className=" bg-zinc-700 hover:bg-zinc-800" />
+              <Button
+                onClick={() => setShowModal(false)}
+                content="Cancel"
+                className=" bg-zinc-700 hover:bg-zinc-800"
+              />
               <Button onClick={handleSave} content="Save" />
             </div>
           </div>
@@ -143,7 +141,6 @@ function Projects() {
 
       {/* PROJECT GRID */}
       <div className="grid grid-cols-3 gap-6">
-
         {filteredProjects.map((proj, i) => {
           const progress = getProgress(proj.tasks);
 
@@ -183,7 +180,6 @@ function Projects() {
             </div>
           );
         })}
-
       </div>
     </div>
   );

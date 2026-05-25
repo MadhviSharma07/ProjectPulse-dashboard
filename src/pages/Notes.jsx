@@ -118,7 +118,7 @@ function Notes() {
 
       {/* 📝 Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-2xl w-[400px]">
             <h2 className="text-lg font-semibold mb-4">
               {currentNote?.id ? "Edit Note" : "Add Note"}

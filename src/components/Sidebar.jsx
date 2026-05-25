@@ -1,111 +1,193 @@
 import React from "react";
-import { useState } from "react";
-import { FaHome, FaProjectDiagram, FaTasks } from "react-icons/fa";
 import {
   MdDashboard,
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
   MdOutlineLogout,
 } from "react-icons/md";
+
+import { FaProjectDiagram, FaTasks } from "react-icons/fa";
+
 import { IoMdSettings } from "react-icons/io";
-import { IoLogOut } from "react-icons/io5";
+
 import { SlCalender } from "react-icons/sl";
+
 import { CgNotes } from "react-icons/cg";
-import { Link } from "react-router-dom";
+
 import { TbBrandGoogleAnalytics } from "react-icons/tb";
+
+import { Link, useLocation } from "react-router-dom";
+
 import { useLogout } from "../context/LogoutContext.jsx";
 
 function Sidebar({ isCollapsed, setIsCollapsed }) {
   const { setShowLogout } = useLogout();
 
+  const location = useLocation();
+
+  const menuItems = [
+    {
+      path: "/",
+      icon: <MdDashboard />,
+      label: "Dashboard",
+    },
+
+    {
+      path: "/projects",
+      icon: <FaProjectDiagram />,
+      label: "Projects",
+    },
+
+    {
+      path: "/tasks",
+      icon: <FaTasks />,
+      label: "Tasks",
+    },
+
+    {
+      path: "/calendar",
+      icon: <SlCalender />,
+      label: "Calendar",
+    },
+
+    {
+      path: "/analytics",
+      icon: <TbBrandGoogleAnalytics />,
+      label: "Analytics",
+    },
+
+    {
+      path: "/notes",
+      icon: <CgNotes />,
+      label: "Notes",
+    },
+
+    {
+      path: "/settings",
+      icon: <IoMdSettings />,
+      label: "Settings",
+    },
+    {
+      action: "logout",
+      icon: <MdOutlineLogout />,
+      label: "Logout",
+    },
+  ];
+
   return (
     <div
-      className={`${
-        isCollapsed ? "w-22" : "w-60"
-      } h-screen bg-[#F8F2FC] fixed left-0 top-0 p-4 rounded-r-2xl transition-all duration-300`}
+      className={`fixed top-1 left-2 h-[95vh] z-50
+      ${isCollapsed ? "w-20" : "w-60"}
+      bg-[#F8F2FC]
+      border border-purple-100
+      rounded-[30px]
+      shadow-[0_8px_30px_rgba(0,0,0,0.06)]
+      transition-all duration-300
+      flex flex-col justify-between
+      px-3 py-4`}
     >
-      <div className=" ">
-        <div className="px-8 py-2 rounded-xl bg-white flex items-center gap-5">
+      {/* TOP */}
+      <div>
+        {/* LOGO */}
+        <div className="flex items-center justify-between mb-6">
           {!isCollapsed && (
-            <h1 className="italic text-xl font-bold text-black">
+            <h1 className="text-xl font-bold text-purple-600 italic">
               ProjectPulse
             </h1>
           )}
+
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="flex items-center justify-center text-zinc-600 hover:text-purple-600 transition"
+            className="
+            w-11 h-11
+            rounded-2xl
+            bg-white
+            shadow-md
+            hover:bg-purple-500
+            hover:text-white
+            text-[#4B2991]
+            flex items-center justify-center
+            transition-all duration-300"
           >
             {isCollapsed ? (
-              <MdKeyboardDoubleArrowRight className="text-2xl " />
+              <MdKeyboardDoubleArrowRight className="text-2xl" />
             ) : (
-              <MdKeyboardDoubleArrowLeft className="text-2xl " />
+              <MdKeyboardDoubleArrowLeft className="text-2xl" />
             )}
           </button>
         </div>
-      </div>
-      <div className="mt-8 mb-5 flex flex-col gap-15">
-        <ul className="text-lg space-y-2 text-black">
-          <Link
-            to="/"
-            className="cursor-pointer hover:bg-purple-200 px-2 py-2 rounded-lg flex items-center gap-2"
-          >
-            <MdDashboard className="text-xl" />
 
-            {!isCollapsed && "Dashboard"}
-          </Link>
-          <Link
-            to="/projects"
-            className="cursor-pointer hover:bg-purple-200 px-2 py-2 rounded-lg flex items-center gap-2"
-          >
-            <FaProjectDiagram className="text-xl " />
-            {!isCollapsed && "Projects"}
-          </Link>
-          <Link
-            to="/tasks"
-            className="cursor-pointer hover:bg-purple-200 px-2 py-2 rounded-lg flex items-center gap-2"
-          >
-            <FaTasks className="text-xl " />
-            {!isCollapsed && "Tasks"}
-          </Link>
-          <Link
-            to="/calendar"
-            className="cursor-pointer hover:bg-purple-200 px-2 py-2 rounded-lg flex items-center gap-2"
-          >
-            <SlCalender className="text-xl " />
-            {!isCollapsed && "Calendar"}
-          </Link>
-          <Link
-            to="/analytics"
-            className="cursor-pointer hover:bg-purple-200 px-2 py-2 rounded-lg flex items-center gap-2"
-          >
-            <TbBrandGoogleAnalytics className="text-xl " />
-            {!isCollapsed && "Analytics"}
-          </Link>
-          <Link
-            to="/notes"
-            className="cursor-pointer hover:bg-purple-200 px-2 py-2 rounded-lg flex items-center gap-2"
-          >
-            <CgNotes className="text-xl " />
-            {!isCollapsed && "Notes"}
-          </Link>
-        </ul>
-        <ul className="text-lg space-y-2 text-black">
-          <Link
-            to="/settings"
-            className="cursor-pointer hover:bg-purple-200 px-2 py-2 rounded-lg flex items-center gap-2"
-          >
-            <IoMdSettings className="text-xl" />
-            {!isCollapsed && "Settings"}
-          </Link>
+        {/* MENU */}
 
-          <button
-            onClick={() => setShowLogout(true)}
-            className="text-red-500 space-y-2 flex items-center gap-2 px-2 py-2"
-          >
-            <MdOutlineLogout className="text-xl" />
-            {!isCollapsed && "Logout"}
-          </button>
-        </ul>
+        <div className="flex flex-col gap-3">
+          {menuItems.map((item, index) => {
+            const active = location.pathname === item.path;
+
+            // LOGOUT BUTTON
+            if (item.action === "logout") {
+              return (
+                <button
+                  key={index}
+                  onClick={() => setShowLogout(true)}
+                  className={`
+          relative flex items-center
+          ${isCollapsed ? "justify-center" : "gap-4"}
+
+          px-3 py-3
+          rounded-2xl
+
+          text-zinc-500
+          hover:text-white
+
+          hover:bg-gradient-to-b
+          hover:from-purple-600
+          hover:to-purple-500
+
+          hover:shadow-lg
+
+          transition-all duration-300
+          overflow-hidden
+          w-full
+          `}
+                >
+                  <MdOutlineLogout className="text-2xl" />
+
+                  {!isCollapsed && <span className="font-medium">Logout</span>}
+                </button>
+              );
+            }
+
+            // NORMAL LINKS
+            return (
+              <Link
+                key={index}
+                to={item.path}
+                className={`
+        relative flex items-center
+        ${isCollapsed ? "justify-center" : "gap-4"}
+
+        px-3 py-3
+        rounded-2xl
+
+        transition-all duration-300
+        overflow-hidden
+
+        ${
+          active
+            ? "bg-gradient-to-b from-purple-600 to-purple-500 text-white shadow-lg"
+            : "text-zinc-500 hover:bg-white hover:shadow-md"
+        }
+        `}
+              >
+                <span className="text-2xl">{item.icon}</span>
+
+                {!isCollapsed && (
+                  <span className="font-medium">{item.label}</span>
+                )}
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
