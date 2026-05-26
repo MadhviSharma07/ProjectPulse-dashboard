@@ -83,7 +83,7 @@ function Tasks() {
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-4 md:mb-8">
         <h1 className="text-2xl font-semibold text-gray-800">My Task</h1>
         <Button
           onClick={() => setShowInput(true)}
@@ -93,13 +93,13 @@ function Tasks() {
       </div>
 
       {/* Search + Filter */}
-      <div className="flex flex-wrap gap-4 mb-6">
+      <div className="flex flex-wrap items-center gap-4 mb-6">
         <input
           type="text"
           placeholder="Search tasks..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 p-3 rounded-xl border"
+          className="flex-1 min-w-[300px] px-4 py-2.5 rounded-xl border border-gray-500 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
 
         {["All", "Completed", "Pending"].map((f) => (
@@ -117,7 +117,7 @@ function Tasks() {
 
       {/* ✅ MODAL */}
       {showInput && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-5 md:px-0">
           <div className="bg-white p-6 rounded-2xl w-[400px]">
             <h2 className="text-lg font-semibold mb-4">Add Task</h2>
 

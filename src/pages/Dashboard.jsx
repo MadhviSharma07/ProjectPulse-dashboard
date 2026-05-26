@@ -125,7 +125,7 @@ function Dashboard() {
   const uniqueProjects = [
     ...new Set(
       tasks
-        .map((t) => t.project?.trim().toLowerCase()) // 🔥 normalize
+        .map((t) => t.project?.trim().toLowerCase()) //  normalize
         .filter(Boolean),
     ),
   ];
@@ -199,34 +199,40 @@ function Dashboard() {
       progress,
     };
   });
-  
+
   const completedProjects = Object.values(projectMap).filter(
-  (proj) => proj.total > 0 && proj.total === proj.completed
-).length;
+    (proj) => proj.total > 0 && proj.total === proj.completed,
+  ).length;
 
-const pendingProjects = totalProjects - completedProjects;
+  const pendingProjects = totalProjects - completedProjects;
 
- const Cards = [
+  const Cards = [
     { title: "Projects", value: totalProjects },
     { title: "Completed", value: completedProjects },
     { title: "Pending", value: pendingProjects },
     { title: "Productivity", value: `${productivity}%` },
   ];
   return (
-    <div className="min-h-screen bg-[#F8F2FC] p-6 ">
-      {/* 🔝 Header */}
+    <div className="min-h-screen bg-[#F8F2FC] p-6 overflow-x-hidden">
+      {/*  Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
       </div>
 
-      {/* 🔹 Stats Cards */}
-      <div className="grid grid-cols-4 gap-6 mb-8">
+      {/*  Stats Cards */}
+      <div
+        className="grid grid-cols-1
+sm:grid-cols-2
+lg:grid-cols-4 gap-6 mb-8"
+      >
         {Cards.map((card, i) => (
           <div
             key={i}
-            className="bg-white/70 backdrop-blur-md p-5 rounded-2xl shadow-xl hover:shadow-xl/20 transition"
+            className="bg-white/70 backdrop-blur-md p-4 md:p-5 rounded-2xl shadow-xl hover:shadow-xl/20 transition"
           >
-            <p className="text-gray-500 text-sm">{card.title}</p>
+            <p className="text-gray-500 text-md md:text-sm lg:text-sm">
+              {card.title}
+            </p>
             <h2 className="text-2xl font-bold text-gray-800 mt-2">
               {card.value}
             </h2>
@@ -235,9 +241,9 @@ const pendingProjects = totalProjects - completedProjects;
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* LEFT SIDE */}
-        <div className="col-span-2 space-y-6">
+        <div className="md:col-span-2 min-w-0 space-y-6 w-full">
           {/*  Today Focus */}
           <div className="bg-white p-6 rounded-2xl shadow-sm ">
             <div className="flex justify-between mb-4">
@@ -309,7 +315,7 @@ const pendingProjects = totalProjects - completedProjects;
                 </div>
               </div>
             )}
-            <ul className="space-y-3 h-38 overflow-y-auto">
+            <ul className="space-y-3 max-h-40 overflow-y-auto">
               {todaysTasks.length === 0 ? (
                 <p className="text-gray-400 text-sm text-center ">
                   No tasks for today
@@ -412,19 +418,46 @@ const pendingProjects = totalProjects - completedProjects;
           </div>
 
           {/* Chart Section */}
-          <div className="bg-white pr-6 p-2 rounded-2xl shadow-sm">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800 pl-5 pt-5">
+          <div
+            className="
+  bg-white
+  p-4 md:p-6
+  rounded-2xl
+  shadow-sm
+  w-full
+  overflow-hidden
+  "
+          >
+            <h2
+              className="
+    text-lg
+    font-semibold
+    mb-4
+    text-gray-800
+    "
+            >
               Productivity
             </h2>
 
-            <div className="w-full h-[250px] min-w-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={weeklyData}>
+            <div className="w-full min-w-0 h-[220px] sm:h-[250px] md:h-[300px]">
+              <ResponsiveContainer
+                width="100%"
+                height={window.innerWidth < 640 ? 220 : 300}
+              >
+                <LineChart
+                  data={weeklyData}
+                  margin={{
+                    top: 5,
+                    right: 10,
+                    left: -20,
+                    bottom: 5,
+                  }}
+                >
                   <CartesianGrid strokeDasharray="3 3" />
 
-                  <XAxis dataKey="day" />
+                  <XAxis dataKey="day" tick={{ fontSize: 12 }} />
 
-                  <YAxis />
+                  <YAxis tick={{ fontSize: 12 }} />
 
                   <Tooltip />
 
@@ -442,16 +475,16 @@ const pendingProjects = totalProjects - completedProjects;
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="space-y-6">
+        <div className="space-y-6 min-w-0 md:col-span-1 w-full">
           {/* Quick Add */}
 
           {/* Deadlines */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm">
+          <div className="bg-white p-6 rounded-2xl shadow-sm ">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">
               Deadlines
             </h2>
 
-            <ul className="space-y-3 text-sm h-15 pr-3 overflow-y-auto">
+            <ul className="space-y-3 text-sm h-20 pr-3 overflow-y-auto">
               {upcomingTasks.length === 0 ? (
                 <p className="text-gray-400">No upcoming deadlines</p>
               ) : (

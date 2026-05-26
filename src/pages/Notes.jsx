@@ -52,25 +52,47 @@ function Notes() {
 
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
-      {/* 🔝 Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">Notes</h1>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        {/* Title */}
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-800">Notes</h2>
 
-        <div className="flex gap-3">
+          <p className="text-sm text-gray-500 mt-1">
+            Organize your thoughts and ideas
+          </p>
+        </div>
+
+        {/* Actions */}
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          {/* Search */}
           <input
             type="text"
             placeholder="Search notes..."
-            className="p-2 rounded-lg border"
+            className="
+          w-full sm:w-64
+          px-4 py-2.5
+          rounded-xl
+          border border-gray-200
+          bg-white
+          text-sm
+          focus:outline-none
+          focus:ring-2
+          focus:ring-purple-400
+        "
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          <Button onClick={() => setShowModal(true)} content="Add Note" />
+          {/* Button */}
+          <div className="w-full sm:w-auto">
+            <Button onClick={() => setShowModal(true)} content="Add Note" />
+          </div>
         </div>
       </div>
 
       {/* 🧾 Notes Grid */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {filteredNotes.map((note) => (
           <div
             key={note.id}
@@ -118,7 +140,7 @@ function Notes() {
 
       {/* 📝 Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-5 md:px-0">
           <div className="bg-white p-6 rounded-2xl w-[400px]">
             <h2 className="text-lg font-semibold mb-4">
               {currentNote?.id ? "Edit Note" : "Add Note"}
@@ -145,7 +167,11 @@ function Notes() {
             />
 
             <div className="flex justify-end gap-3">
-              <Button onClick={() => setShowModal(false)} content="Cancel" className=" bg-zinc-700 hover:bg-zinc-800" />
+              <Button
+                onClick={() => setShowModal(false)}
+                content="Cancel"
+                className=" bg-zinc-700 hover:bg-zinc-800"
+              />
 
               <Button onClick={handleSave} content="Save" />
             </div>
@@ -153,7 +179,7 @@ function Notes() {
         </div>
       )}
       {selectedNote && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center  ">
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center px-5 md:px-0 z-50">
           <div className="bg-white p-6 rounded-2xl w-[500px] max-h-[80vh] overflow-hidden">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
               {selectedNote.title}
@@ -168,12 +194,11 @@ function Notes() {
             </p>
 
             <div className="flex justify-end mt-6">
-              <button
+              <Button
                 onClick={() => setSelectedNote(null)}
-                className="bg-purple-500 text-white px-4 py-2 rounded-lg"
-              >
-                Close
-              </button>
+                content="Close"
+                className=" bg-zinc-700 hover:bg-zinc-800"
+              />
             </div>
           </div>
         </div>

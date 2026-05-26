@@ -119,7 +119,17 @@ function Calendar() {
         <div
           key={d}
           onClick={() => setSelectedDate(key)}
-          className="h-24 bg-white rounded-xl p-2 shadow-md hover:bg-purple-50 hover:shadow-xl cursor-pointer transition"
+          className="
+h-16 sm:h-24
+bg-white
+rounded-lg sm:rounded-xl
+p-1.5 sm:p-2
+shadow-sm sm:shadow-md
+hover:bg-purple-50
+hover:shadow-lg
+cursor-pointer
+transition
+"
         >
           {/* Date */}
           <div
@@ -164,16 +174,18 @@ function Calendar() {
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Calendar</h1>
+      <div className="flex items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-2 items-center md:gap-5">
+          <h1 className="text-2xl font-semibold">Calendar</h1>
 
-        <p className="text-md font-medium text-purple-600 bg-purple-100 px-4 py-1 rounded-full">
-          {new Date().toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })}
-        </p>
+          <p className="text-md w-32 font-medium text-purple-600 bg-purple-100 px-4 py-1 rounded-full">
+            {new Date().toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </p>
+        </div>
 
         <div className="flex items-center gap-3">
           <button
@@ -197,9 +209,9 @@ function Calendar() {
       </div>
 
       {/*  Layout */}
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* 📅 Calendar */}
-        <div className="col-span-3">
+        <div className="lg:col-span-3">
           <div className="grid grid-cols-7 text-center text-sm text-gray-500 mb-2">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
               <div key={d}>{d}</div>
@@ -236,38 +248,82 @@ function Calendar() {
                 <span className="w-2 h-2 rounded-full bg-blue-500"></span>
 
                 <h3 className="text-sm font-medium text-gray-600">Created</h3>
+
+                {(createdTasksByDate[selectedDate] || []).length > 0 && (
+                  <span className="text-xs text-gray-400">
+                    ({createdTasksByDate[selectedDate].length})
+                  </span>
+                )}
               </div>
 
-              <div className="space-y-2">
-                {(createdTasksByDate[selectedDate] || []).map((task) => (
-                  <div
-                    key={task.id}
-                    className="bg-gray-50 rounded-xl px-3 py-2 text-sm text-gray-700"
-                  >
-                    {task.title}
-                  </div>
-                ))}
-              </div>
+              {(createdTasksByDate[selectedDate] || []).length > 0 && (
+                <div
+                  className={`
+        space-y-2
+        ${
+          createdTasksByDate[selectedDate].length > 3
+            ? "max-h-30 md:max-h-38 overflow-y-auto pr-1"
+            : ""
+        }
+      `}
+                >
+                  {(createdTasksByDate[selectedDate] || []).map((task) => (
+                    <div
+                      key={task.id}
+                      className="
+            bg-gray-50
+            rounded-xl
+            px-3 py-2
+            text-sm text-gray-700
+          "
+                    >
+                      {task.title}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Due Tasks */}
+            {/* Scheduled Tasks */}
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full bg-purple-400"></span>
 
                 <h3 className="text-sm font-medium text-gray-600">Scheduled</h3>
+
+                {(dueTasksByDate[selectedDate] || []).length > 0 && (
+                  <span className="text-xs text-gray-400">
+                    ({dueTasksByDate[selectedDate].length})
+                  </span>
+                )}
               </div>
 
-              <div className="space-y-2">
-                {(dueTasksByDate[selectedDate] || []).map((task) => (
-                  <div
-                    key={task.id}
-                    className="bg-purple-50 rounded-xl px-3 py-2 text-sm text-gray-700"
-                  >
-                    {task.title}
-                  </div>
-                ))}
-              </div>
+              {(dueTasksByDate[selectedDate] || []).length > 0 && (
+                <div
+                  className={`
+        space-y-2
+        ${
+          dueTasksByDate[selectedDate].length > 3
+            ? "max-h-30 md:max-h-38 overflow-y-auto pr-1"
+            : ""
+        }
+      `}
+                >
+                  {(dueTasksByDate[selectedDate] || []).map((task) => (
+                    <div
+                      key={task.id}
+                      className="
+            bg-purple-50
+            rounded-xl
+            px-3 py-2
+            text-sm text-gray-700
+          "
+                    >
+                      {task.title}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Completed Tasks */}
@@ -276,18 +332,41 @@ function Calendar() {
                 <span className="w-2 h-2 rounded-full bg-green-400"></span>
 
                 <h3 className="text-sm font-medium text-gray-600">Completed</h3>
+
+                {(completedTasksByDate[selectedDate] || []).length > 0 && (
+                  <span className="text-xs text-gray-400">
+                    ({completedTasksByDate[selectedDate].length})
+                  </span>
+                )}
               </div>
 
-              <div className="space-y-2">
-                {(completedTasksByDate[selectedDate] || []).map((task) => (
-                  <div
-                    key={task.id}
-                    className="bg-green-50 rounded-xl px-3 py-2 text-sm text-gray-400 line-through"
-                  >
-                    {task.title}
-                  </div>
-                ))}
-              </div>
+              {(completedTasksByDate[selectedDate] || []).length > 0 && (
+                <div
+                  className={`
+        space-y-2
+        ${
+          completedTasksByDate[selectedDate].length > 3
+            ? "max-h-30 md:max-h-38 overflow-y-auto pr-1"
+            : ""
+        }
+      `}
+                >
+                  {(completedTasksByDate[selectedDate] || []).map((task) => (
+                    <div
+                      key={task.id}
+                      className="
+            bg-green-50
+            rounded-xl
+            px-3 py-2
+            text-sm text-gray-400
+            line-through
+          "
+                    >
+                      {task.title}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           {/* Add Task */}

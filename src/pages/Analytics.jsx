@@ -70,7 +70,7 @@ function Analytics() {
     },
   ];
 
-  const COLORS = ["#8B5CF6", "#dbd2f0"]; // purple + gray
+  const COLORS = ["#8B5CF6", "#c4aff5"]; // purple + gray
   const BAR_COLORS = ["#EF4444", "#F59E0B", "#10B981"];
 
   return (
@@ -86,7 +86,7 @@ function Analytics() {
       </div>
 
       {/* 🔹 Stats Cards */}
-      <div className="grid grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         {[
           { title: "Total Tasks", value: totalTasks },
           { title: "Completed", value: completedTasks },
@@ -106,65 +106,163 @@ function Analytics() {
       </div>
 
       {/* 🔹 Charts Layout */}
-      <div className="grid grid-cols-3 gap-6 ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-min-0">
         {/* LEFT */}
-        <div className="col-span-2 space-y-6">
+        <div className="md:col-span-2 space-y-6">
           {/* 📈 Line Chart */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm">
-            <h2 className="text-lg font-semibold mb-4">Weekly Productivity</h2>
+          <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm w-full overflow-hidden">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+                Weekly Productivity
+              </h2>
+            </div>
 
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={weeklyData}>
-                <CartesianGrid strokeDasharray="2 2" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="tasks"
-                  stroke="#8B5CF6"
-                  strokeWidth={3}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <div className="w-full w-min-0 h-[220px] sm:h-[250px]">
+              <ResponsiveContainer
+                width="100%"
+                height={window.innerWidth < 640 ? 220 : 260}
+              >
+                <LineChart
+                  data={weeklyData}
+                  margin={{
+                    top: 5,
+                    right: 5,
+                    left: -20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="2 2" />
+
+                  <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+
+                  <YAxis tick={{ fontSize: 12 }} />
+
+                  <Tooltip />
+
+                  <Line
+                    type="monotone"
+                    dataKey="tasks"
+                    stroke="#8B5CF6"
+                    strokeWidth={3}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-
           {/* 📊 Bar Chart */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm">
-            <h2 className="text-lg font-semibold mb-4">Task Priority</h2>
+          <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm w-full overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+                Task Priority
+              </h2>
 
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={priorityData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value">
-                  {priorityData.map((entry, index) => (
-                    <Cell key={index} fill={BAR_COLORS[index]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+              <div className="text-xs sm:text-sm text-purple-500 bg-purple-50 px-2 py-1 rounded-lg">
+                Overview
+              </div>
+            </div>
+
+            {/* Chart */}
+            <div className="w-full w-min-0 h-[220px] sm:h-[260px]">
+              <ResponsiveContainer
+                width="100%"
+                height={window.innerWidth < 600 ? 220 : 280}
+              >
+                <BarChart
+                  data={priorityData}
+                  margin={{
+                    top: 10,
+                    right: 5,
+                    left: -20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+
+                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+
+                  <YAxis tick={{ fontSize: 12 }} />
+
+                  <Tooltip />
+
+                  <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+                    {priorityData.map((entry, index) => (
+                      <Cell key={index} fill={BAR_COLORS[index]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
 
         {/* RIGHT */}
         <div className="space-y-6">
           {/* 🥧 Pie Chart */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm">
-            <h2 className="text-lg font-semibold mb-4">Task Status</h2>
+          <div className="bg-white rounded-3xl shadow-sm p-4 sm:p-5 w-full overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between ">
+              <div>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+                  Task Status
+                </h2>
 
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie data={taskStatus} dataKey="value" outerRadius={80} label>
-                  {taskStatus.map((entry, index) => (
-                    <Cell key={index} fill={COLORS[index]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+                <p className="text-xs sm:text-sm text-gray-400 mt-1">
+                  Progress overview of your tasks
+                </p>
+              </div>
+
+              <div className="bg-purple-50 text-purple-600 text-xs sm:text-sm px-3 py-1 rounded-xl font-medium">
+                Analytics
+              </div>
+            </div>
+
+            {/* Chart */}
+            <div className="w-full h-[260px] sm:h-[320px] flex items-center justify-center">
+              <ResponsiveContainer
+                width="100%"
+                height={window.innerWidth < 640 ? 220 : 250}
+              >
+                <PieChart>
+                  <Pie
+                    data={taskStatus}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={75}
+                    paddingAngle={4}
+                    labelLine={false}
+                    label={({ name, percent }) =>
+                      `${name} ${(percent * 100).toFixed(0)}%`
+                    }
+                  >
+                    {taskStatus.map((entry, index) => (
+                      <Cell key={index} fill={COLORS[index]} />
+                    ))}
+                  </Pie>
+
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Custom Legend */}
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
+              {taskStatus.map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <span
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: COLORS[index] }}
+                  ></span>
+
+                  <p className="text-sm text-gray-600">{item.name}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* 🧠 Insights */}

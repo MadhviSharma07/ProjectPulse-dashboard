@@ -6,6 +6,8 @@ import {
   MdOutlineLogout,
 } from "react-icons/md";
 
+import { useState } from "react";
+
 import { FaProjectDiagram, FaTasks } from "react-icons/fa";
 
 import { IoMdSettings } from "react-icons/io";
@@ -20,7 +22,12 @@ import { Link, useLocation } from "react-router-dom";
 
 import { useLogout } from "../context/LogoutContext.jsx";
 
-function Sidebar({ isCollapsed, setIsCollapsed }) {
+function Sidebar({
+  isCollapsed,
+  setIsCollapsed,
+  isMobileMenuOpen,
+  setIsMobileMenuOpen,
+}) {
   const { setShowLogout } = useLogout();
 
   const location = useLocation();
@@ -78,6 +85,11 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
     <div
       className={`fixed top-1 left-2 h-[95vh] z-50
       ${isCollapsed ? "w-20" : "w-60"}
+      ${
+        isMobileMenuOpen
+          ? "translate-x-0"
+          : "-translate-x-[120%] md:translate-x-0"
+      }
       bg-[#F8F2FC]
       border border-purple-100
       rounded-[30px]

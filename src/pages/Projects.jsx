@@ -13,7 +13,7 @@ function Projects() {
   const [taskInputs, setTaskInputs] = useState([""]);
   const [search, setSearch] = useState("");
 
-  // 🔥 GROUP TASKS INTO PROJECTS
+  //  GROUP TASKS INTO PROJECTS
   const projectMap = {};
 
   tasks.forEach((task) => {
@@ -47,7 +47,7 @@ function Projects() {
     setTaskInputs(updated);
   };
 
-  // 🔥 SAVE PROJECT (actually adds tasks)
+  //  SAVE PROJECT (actually adds tasks)
   const handleSave = () => {
     if (!projectName) return;
 
@@ -65,13 +65,13 @@ function Projects() {
     setShowModal(false);
   };
 
-  // 🔥 DELETE PROJECT (delete all its tasks)
+  //  DELETE PROJECT (delete all its tasks)
   const handleDeleteProject = (projectName) => {
     const projectTasks = tasks.filter((t) => t.project === projectName);
     projectTasks.forEach((t) => deleteTask(t.id));
   };
 
-  // 🔍 SEARCH
+  //  SEARCH
   const filteredProjects = projects.filter((proj) =>
     proj.name.toLowerCase().includes(search.toLowerCase()),
   );
@@ -79,14 +79,14 @@ function Projects() {
   return (
     <div className="min-h-screen bg-[#F8F2FC] p-6">
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-4 md:mb-8">
         <h1 className="text-2xl font-semibold text-gray-800">My Projects</h1>
         <Button content="New Project" onClick={() => setShowModal(true)} />
       </div>
 
       {/* MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-5 md:px-0">
           <div className="bg-white p-6 rounded-xl w-96">
             <h2 className="text-lg font-semibold mb-4">Create Project</h2>
 
@@ -140,7 +140,7 @@ function Projects() {
       </div>
 
       {/* PROJECT GRID */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProjects.map((proj, i) => {
           const progress = getProgress(proj.tasks);
 
