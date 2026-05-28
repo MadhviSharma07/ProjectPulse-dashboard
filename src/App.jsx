@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { HashRouter, Routes, Route } from "react-router-dom"
 import MainLayout from "./Layout/MainLayout"
 import Dashboard from "./pages/Dashboard"
 import Projects from "./pages/Projects"
@@ -11,7 +11,7 @@ import Logout from "./pages/Logout"
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />
@@ -24,7 +24,7 @@ function App() {
         </Route>
        
       </Routes> <Logout />
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 

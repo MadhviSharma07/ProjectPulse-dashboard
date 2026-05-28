@@ -45,7 +45,7 @@ function MainLayout() {
           className={`
   flex-1
   mt-22
-  mr-2
+  
   overflow-auto
   rounded-xl
   overflow-y-auto
@@ -55,8 +55,8 @@ function MainLayout() {
   [&::-webkit-scrollbar]:hidden
 
   transition-all duration-300
-
-  ml-0
+  mr-2
+  ml-2
 
   ${isCollapsed ? "md:ml-24" : "md:ml-64"}
   `}
