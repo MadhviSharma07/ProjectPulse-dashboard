@@ -74,19 +74,19 @@ function Analytics() {
   const BAR_COLORS = ["#EF4444", "#F59E0B", "#10B981"];
 
   return (
-    <div className="min-h-screen bg-[#F8F2FC] p-6">
+    <div className="min-h-screen bg-[#F8F2FC] dark:bg-zinc-700/50  p-6">
       {/* 🔝 Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-semibold text-gray-800">Analytics</h1>
 
-        <select className="bg-white p-2 rounded-lg shadow-sm">
+        <select className="bg-white dark:bg-zinc-600  dark:text-white p-2 rounded-lg shadow-sm">
           <option>This Week</option>
           <option>This Month</option>
         </select>
       </div>
 
       {/* 🔹 Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 ">
         {[
           { title: "Total Tasks", value: totalTasks },
           { title: "Completed", value: completedTasks },
@@ -95,10 +95,11 @@ function Analytics() {
         ].map((card, i) => (
           <div
             key={i}
-            className="bg-white p-5 rounded-2xl shadow-xl hover:shadow-xl/20"
+            className="bg-white p-5 rounded-2xl shadow-xl hover:shadow-xl/20 dark:bg-zinc-800/60 border border-transparent  dark:border-purple-400/40
+    hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] "
           >
-            <p className="text-gray-500 text-sm">{card.title}</p>
-            <h2 className="text-2xl font-bold mt-2 text-gray-800">
+            <p className="text-gray-500 text-sm dark:text-white">{card.title}</p>
+            <h2 className="text-2xl font-bold mt-2 text-gray-800 dark:text-white">
               {card.value}
             </h2>
           </div>
@@ -106,13 +107,13 @@ function Analytics() {
       </div>
 
       {/* 🔹 Charts Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-min-0">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 min-w-0">
         {/* LEFT */}
-        <div className="md:col-span-2 space-y-6">
+        <div className="md:col-span-2 space-y-6 ">
           {/* 📈 Line Chart */}
-          <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm w-full overflow-hidden">
+          <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm w-full overflow-hidden  dark:bg-zinc-800/60 border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">
                 Weekly Productivity
               </h2>
             </div>
@@ -152,14 +153,15 @@ function Analytics() {
             </div>
           </div>
           {/* 📊 Bar Chart */}
-          <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm w-full overflow-hidden">
+          <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm w-full overflow-hidden  dark:bg-zinc-800/60 border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300
+  ">
             {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+            <div className="flex items-center justify-between mb-4 ">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">
                 Task Priority
               </h2>
 
-              <div className="text-xs sm:text-sm text-purple-500 bg-purple-50 px-2 py-1 rounded-lg">
+              <div className="text-xs sm:text-sm text-purple-500 bg-purple-50 dark:bg-purple-900/30 dark:text-purple-300 px-2 py-1 rounded-lg">
                 Overview
               </div>
             </div>
@@ -201,11 +203,11 @@ function Analytics() {
         {/* RIGHT */}
         <div className="space-y-6">
           {/* 🥧 Pie Chart */}
-          <div className="bg-white rounded-3xl shadow-sm p-4 sm:p-5 w-full overflow-hidden">
+          <div className="bg-white rounded-3xl shadow-sm p-4 sm:p-5 w-full overflow-hidden  dark:bg-zinc-800/60 border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             {/* Header */}
             <div className="flex items-center justify-between ">
               <div>
-                <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+                <h2 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">
                   Task Status
                 </h2>
 
@@ -214,7 +216,7 @@ function Analytics() {
                 </p>
               </div>
 
-              <div className="bg-purple-50 text-purple-600 text-xs sm:text-sm px-3 py-1 rounded-xl font-medium">
+              <div className="bg-purple-50 dark:bg-purple-900/30 dark:text-purple-300 text-purple-600 text-xs sm:text-sm px-3 py-1 rounded-xl font-medium">
                 Analytics
               </div>
             </div>
@@ -230,10 +232,10 @@ function Analytics() {
                     data={taskStatus}
                     dataKey="value"
                     nameKey="name"
-                    cx="50%"
+                    cx="48%"
                     cy="50%"
-                    innerRadius={45}
-                    outerRadius={75}
+                    innerRadius={40}
+                    outerRadius={65}
                     paddingAngle={4}
                     labelLine={false}
                     label={({ name, percent }) =>
@@ -266,7 +268,7 @@ function Analytics() {
           </div>
 
           {/* 🧠 Insights */}
-          <div className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-2xl shadow">
+          <div className="bg-gradient-to-r from-purple-400 to-purple-500  text-white p-6 rounded-2xl shadow  shadow-sm dark:from-[#370850] dark:to-[#6E15AF] border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             <h2 className="text-lg font-semibold mb-2">Insights</h2>
             <p className="text-sm">
               You completed {completedTasks} tasks 🚀 <br />

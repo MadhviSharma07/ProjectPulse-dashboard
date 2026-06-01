@@ -213,10 +213,10 @@ function Dashboard() {
     { title: "Productivity", value: `${productivity}%` },
   ];
   return (
-    <div className="min-h-screen bg-[#F8F2FC] p-6 overflow-x-hidden">
+    <div className="min-h-screen bg-[#F8F2FC] dark:bg-zinc-700/50  p-6 overflow-x-hidden">
       {/*  Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
+        <h1 className="text-2xl font-semibold dark:text-white text-gray-800">Dashboard</h1>
       </div>
 
       {/*  Stats Cards */}
@@ -228,12 +228,13 @@ lg:grid-cols-4 gap-6 mb-8"
         {Cards.map((card, i) => (
           <div
             key={i}
-            className="bg-white/70 backdrop-blur-md p-4 md:p-5 rounded-2xl shadow-xl hover:shadow-xl/20 transition"
+            className="bg-white/70 dark:bg-zinc-800/60 border border-transparent  dark:border-purple-400/40
+    hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300 backdrop-blur-md p-4 md:p-5 rounded-2xl shadow-xl hover:shadow-xl/20 transition"
           >
-            <p className="text-gray-500 text-md md:text-sm lg:text-sm">
+            <p className="text-gray-500 text-md dark:text-white md:text-sm lg:text-sm">
               {card.title}
             </p>
-            <h2 className="text-2xl font-bold text-gray-800 mt-2">
+            <h2 className="text-2xl dark:text-white font-bold text-gray-800 mt-2">
               {card.value}
             </h2>
           </div>
@@ -241,13 +242,13 @@ lg:grid-cols-4 gap-6 mb-8"
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
         {/* LEFT SIDE */}
         <div className="md:col-span-2 min-w-0 space-y-6 w-full">
           {/*  Today Focus */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm ">
+          <div className="bg-white p-6 rounded-2xl shadow-sm dark:bg-zinc-800/60 border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300 ">
             <div className="flex justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-3 ">
+              <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-3 dark:text-white ">
                 Today's Focus
               </h2>
               <span className="text-sm">
@@ -255,9 +256,9 @@ lg:grid-cols-4 gap-6 mb-8"
               </span>
             </div>
             {showModal && (
-              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
-                <div className="bg-white p-6 rounded-2xl w-[400px] shadow-xl">
-                  <h2 className="text-lg font-semibold mb-4">Add Task</h2>
+              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-3">
+                <div className="bg-white dark:bg-zinc-800  border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300  p-6 rounded-2xl w-[400px] shadow-xl">
+                  <h2 className="text-lg font-semibold mb-4 dark:text-white">Add Task</h2>
 
                   {/* Title */}
                   <input
@@ -265,7 +266,7 @@ lg:grid-cols-4 gap-6 mb-8"
                     placeholder="Task title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
+                    className="w-full p-2 border dark:text-gray-400 dark:border-purple-400/30 dark:shadow-[0_0_15px_rgba(192,132,252,0.25)]  rounded mb-3"
                   />
 
                   {/* duedate */}
@@ -273,7 +274,7 @@ lg:grid-cols-4 gap-6 mb-8"
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
+                    className="w-full p-2 border dark:text-gray-400 dark:border-purple-400/30 dark:shadow-[0_0_15px_rgba(192,132,252,0.15)] rounded mb-3"
                   />
 
                   {/* Project */}
@@ -282,14 +283,14 @@ lg:grid-cols-4 gap-6 mb-8"
                     placeholder="Project (optional)"
                     value={project}
                     onChange={(e) => setProject(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
+                    className="w-full p-2 border dark:text-gray-400 dark:border-purple-400/30 dark:shadow-[0_0_15px_rgba(192,132,252,0.15)] rounded mb-3"
                   />
 
                   {/* Priority */}
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value)}
-                    className="w-full p-2 border rounded mb-4"
+                   className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500 "
                   >
                     <option value="high">High</option>
                     <option value="medium">Medium</option>
@@ -298,19 +299,12 @@ lg:grid-cols-4 gap-6 mb-8"
 
                   {/* Buttons */}
                   <div className="flex justify-end gap-3">
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="px-4 py-2 bg-gray-200 rounded"
-                    >
-                      Cancel
-                    </button>
-
-                    <button
+                    <Button content="Cancel" variant="secondary" onClick={() => setShowModal(false)} />
+                    <Button
+                      content="Add"
                       onClick={handleAddTask}
-                      className="px-4 py-2 bg-purple-500 text-white rounded"
-                    >
-                      Add
-                    </button>
+                      className="bg-purple-500 text-white"
+                    />
                   </div>
                 </div>
               </div>
@@ -324,7 +318,7 @@ lg:grid-cols-4 gap-6 mb-8"
                 todaysTasks.map((task) => (
                   <li
                     key={task.id}
-                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-purple-50 transition"
+                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-purple-50 hover:dark:bg-purple-600/10 transition"
                   >
                     <input
                       type="checkbox"
@@ -334,16 +328,16 @@ lg:grid-cols-4 gap-6 mb-8"
                     />
 
                     <div className="w-full flex justify-between items-center">
-                      <span className="text-gray-700">{task.title}</span>
+                      <span className="text-gray-700 dark:text-gray-300">{task.title}</span>
                       {/* priority badge */}
                       <div className="flex gap-2">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-medium ${
                             task.priority === "high"
-                              ? "bg-red-100 text-red-800"
+                              ? "bg-red-100 dark:bg-red-600/20 dark:text-red-300/70 text-red-800"
                               : task.priority === "medium"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-green-100 text-green-800"
+                                ? "bg-yellow-100 dark:bg-yellow-600/20 dark:text-yellow-300/70 text-yellow-800"
+                                : "bg-green-100 dark:bg-green-600/20 dark:text-green-300/70 text-green-800"
                           }`}
                         >
                           {task.priority}
@@ -359,7 +353,7 @@ lg:grid-cols-4 gap-6 mb-8"
 
                         <MdDelete
                           onClick={() => deleteTask(task.id)}
-                          className="text-xl hover:text-red-500 cursor-pointer"
+                          className="text-xl hover:text-red-500 dark:text-gray-500 cursor-pointer"
                         />
                       </div>
                     </div>
@@ -368,23 +362,23 @@ lg:grid-cols-4 gap-6 mb-8"
               )}
             </ul>
             {showEditModal && (
-              <div className="fixed inset-0 bg-black/30 flex justify-center items-center">
-                <div className="bg-white p-6 rounded-xl w-96">
-                  <h2 className="text-lg font-semibold mb-4">Edit Task</h2>
+              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-5">
+                <div className="bg-white p-6 rounded-xl w-96  dark:bg-zinc-800  border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
+                  <h2 className="text-lg font-semibold mb-4 dark:text-white">Edit Task</h2>
 
                   {/* Title */}
                   <input
                     type="text"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
+                    className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
                   />
 
                   {/* Priority */}
                   <select
                     value={editPriority}
                     onChange={(e) => setEditPriority(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
+                    className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500 "
                   >
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -396,21 +390,14 @@ lg:grid-cols-4 gap-6 mb-8"
                     type="date"
                     value={editDeadline}
                     onChange={(e) => setEditDeadline(e.target.value)}
-                    className="w-full p-2 border rounded mb-3"
+                    className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
                   />
 
                   {/* Buttons */}
                   <div className="flex justify-end gap-2">
-                    <button onClick={() => setShowEditModal(false)}>
-                      Cancel
-                    </button>
+                   <Button content="Cancel" variant="secondary" onClick={() => setShowEditModal(false)} />
 
-                    <button
-                      onClick={handleUpdate}
-                      className="bg-purple-500 text-white px-3 py-1 rounded"
-                    >
-                      Save
-                    </button>
+                   <Button content="Update" onClick={handleUpdate} className="bg-blue-500 text-white" />
                   </div>
                 </div>
               </div>
@@ -425,12 +412,12 @@ lg:grid-cols-4 gap-6 mb-8"
   rounded-2xl
   shadow-sm
   w-full
-  overflow-hidden
+  overflow-hidden  shadow-sm dark:bg-zinc-800/60 border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300
   "
           >
             <h2
               className="
-    text-lg
+    text-lg dark:text-white
     font-semibold
     mb-4
     text-gray-800
@@ -479,28 +466,28 @@ lg:grid-cols-4 gap-6 mb-8"
           {/* Quick Add */}
 
           {/* Deadlines */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm ">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          <div className="bg-white p-6 rounded-2xl shadow-sm  shadow-sm dark:bg-zinc-800/60 border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
               Deadlines
             </h2>
 
             <ul className="space-y-3 text-sm h-20 pr-3 overflow-y-auto">
               {upcomingTasks.length === 0 ? (
-                <p className="text-gray-400">No upcoming deadlines</p>
+                <p className="text-gray-400 dark:text-gray-300">No upcoming deadlines</p>
               ) : (
                 upcomingTasks.map((task) => (
                   <li
                     key={task.id}
                     className="flex justify-between items-center"
                   >
-                    <span className="text-gray-700">{task.title}</span>
+                    <span className="text-gray-700 dark:text-gray-300">{task.title}</span>
 
                     <span
                       className={`${
                         getDeadlineLabel(task.due) === "Today"
                           ? "text-red-500"
                           : "text-gray-500"
-                      }`}
+                      } dark:text-gray-300/80`}
                     >
                       {getDeadlineLabel(task.due)}
                     </span>
@@ -511,14 +498,14 @@ lg:grid-cols-4 gap-6 mb-8"
           </div>
 
           {/* projects */}
-          <div className="bg-white p-5 rounded-2xl shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          <div className="bg-white p-5 rounded-2xl shadow-sm  shadow-sm dark:bg-zinc-800/60 border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4 dark:text-white">
               Projects
             </h2>
 
             <div className="space-y-4 pr-4 h-40 overflow-y-auto">
               {projectData.length === 0 ? (
-                <p className="text-gray-400 text-sm ">No projects yet</p>
+                <p className="text-gray-400 text-sm dark:text-gray-300">No projects yet</p>
               ) : (
                 projectData.map((proj, i) => {
                   const borderColor =
@@ -531,14 +518,14 @@ lg:grid-cols-4 gap-6 mb-8"
                   return (
                     <div
                       key={i}
-                      className="flex items-center justify-between p-1 rounded-xl hover:bg-purple-50 transition "
+                      className="flex items-center justify-between px-1 rounded-xl  hover:dark:bg-purple-600/10 transition "
                     >
                       {/* LEFT */}
                       <div>
-                        <p className="text-sm font-medium text-gray-800 capitalize">
+                        <p className="text-sm font-medium text-gray-800 capitalize dark:text-gray-300">
                           {proj.name}
                         </p>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-gray-400 dark:text-gray-300/80">
                           {proj.progress}% completed
                         </p>
                       </div>
@@ -554,7 +541,7 @@ lg:grid-cols-4 gap-6 mb-8"
                           }}
                         ></div>
 
-                        <span className="text-[14px] font-semibold text-gray-700">
+                        <span className="text-[14px] font-semibold text-gray-700 dark:text-gray-300/80">
                           {proj.progress}%
                         </span>
                       </div>
@@ -566,7 +553,7 @@ lg:grid-cols-4 gap-6 mb-8"
           </div>
 
           {/* Insights */}
-          <div className="bg-gradient-to-r from-purple-400 to-purple-500 text-white p-6 rounded-2xl shadow">
+          <div className="bg-gradient-to-r from-purple-400 to-purple-500  text-white p-6 rounded-2xl shadow  shadow-sm dark:from-[#370850] dark:to-[#6E15AF] border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             <h2 className="text-lg font-semibold mb-2">Insights</h2>
 
             <p className="text-sm leading-relaxed">

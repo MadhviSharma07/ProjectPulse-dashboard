@@ -126,17 +126,21 @@ rounded-lg sm:rounded-xl
 p-1.5 sm:p-2
 shadow-sm sm:shadow-md
 hover:bg-purple-50
+dark:hover:bg-zinc-700/50
 hover:shadow-lg
 cursor-pointer
 transition
+dark:bg-zinc-800/60
+ border-transparent border  dark:border-purple-400/40
+  hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] hover:shadow-xl/20 transition
 "
         >
           {/* Date */}
           <div
             className={`text-sm font-medium mb-1 ${
               isToday(y, m, d)
-                ? "bg-purple-500 text-white w-6 h-6 flex items-center justify-center rounded-full"
-                : "text-gray-700"
+                ? "bg-purple-500 text-white w-6 h-6 flex items-center justify-center rounded-full dark:text-white"
+                : "text-gray-700 dark:text-white"
             }`}
           >
             {d}
@@ -172,13 +176,13 @@ transition
   });
 
   return (
-    <div className="min-h-screen bg-[#F8F2FC] p-6">
+    <div className="min-h-screen bg-[#F8F2FC] p-6 dark:bg-zinc-700/50">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 mb-6">
         <div className="flex flex-col md:flex-row gap-2 items-center md:gap-5">
-          <h1 className="text-2xl font-semibold">Calendar</h1>
+          <h1 className="text-2xl font-semibold dark:text-white">Calendar</h1>
 
-          <p className="text-md w-32 font-medium text-purple-600 bg-purple-100 px-4 py-1 rounded-full">
+          <p className="text-md w-32 font-medium text-purple-600 dark:text-purple-200 dark:bg-purple-500/20 bg-purple-100 px-4 py-1 rounded-full">
             {new Date().toLocaleDateString("en-GB", {
               day: "numeric",
               month: "short",
@@ -190,16 +194,16 @@ transition
         <div className="flex items-center gap-3">
           <button
             onClick={prevMonth}
-            className="p-2 bg-white rounded-lg shadow"
+            className="p-2 bg-white rounded-lg shadow dark:bg-zinc-300/50 dark:text-white"
           >
             <MdChevronLeft />
           </button>
 
-          <h2 className="text-lg font-medium">{monthYear}</h2>
+          <h2 className="text-lg font-medium dark:text-white">{monthYear}</h2>
 
           <button
             onClick={nextMonth}
-            className="p-2 bg-white rounded-lg shadow"
+            className="p-2 bg-white rounded-lg shadow dark:bg-zinc-300/50 dark:text-white"
           >
             <MdChevronRight />
           </button>
@@ -218,13 +222,17 @@ transition
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-3">{renderDays()}</div>
+          <div className="grid grid-cols-7 gap-3 ">{renderDays()}</div>
         </div>
 
         {/* Sidebar */}
-        <div className="bg-white p-5 rounded-2xl shadow-sm sticky top-6 h-fit">
-          <div className="mb-5 border-b pb-4">
-            <h2 className="text-xl font-bold text-gray-800">
+        <div className="bg-white p-5 rounded-2xl shadow-sm sticky top-6 h-fit dark:bg-zinc-900/90
+      dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)]
+      border border-purple-100
+      dark:border-zinc-700
+      transition-all duration-300">
+          <div className="mb-5 border-b dark:border-gray-600 pb-4">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
               {selectedDate
                 ? new Date(selectedDate).toLocaleDateString("en-US", {
                     weekday: "long",
@@ -247,7 +255,7 @@ transition
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full bg-blue-500"></span>
 
-                <h3 className="text-sm font-medium text-gray-600">Created</h3>
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">Created</h3>
 
                 {(createdTasksByDate[selectedDate] || []).length > 0 && (
                   <span className="text-xs text-gray-400">
@@ -272,9 +280,11 @@ transition
                       key={task.id}
                       className="
             bg-gray-50
+            dark:bg-gray-800/50
             rounded-xl
             px-3 py-2
             text-sm text-gray-700
+            dark:text-gray-400
           "
                     >
                       {task.title}
@@ -289,7 +299,7 @@ transition
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full bg-purple-400"></span>
 
-                <h3 className="text-sm font-medium text-gray-600">Scheduled</h3>
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">Scheduled</h3>
 
                 {(dueTasksByDate[selectedDate] || []).length > 0 && (
                   <span className="text-xs text-gray-400">
@@ -314,9 +324,11 @@ transition
                       key={task.id}
                       className="
             bg-purple-50
+            dark:bg-purple-900/30
             rounded-xl
             px-3 py-2
             text-sm text-gray-700
+            dark:text-gray-400
           "
                     >
                       {task.title}
@@ -331,7 +343,7 @@ transition
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full bg-green-400"></span>
 
-                <h3 className="text-sm font-medium text-gray-600">Completed</h3>
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">Completed</h3>
 
                 {(completedTasksByDate[selectedDate] || []).length > 0 && (
                   <span className="text-xs text-gray-400">
@@ -356,6 +368,7 @@ transition
                       key={task.id}
                       className="
             bg-green-50
+            dark:bg-green-900/30
             rounded-xl
             px-3 py-2
             text-sm text-gray-400
@@ -372,8 +385,8 @@ transition
           {/* Add Task */}
           {selectedDate && (
             <div className="flex gap-2">
-              <div className="mt-6 border-t pt-4">
-                <p className="text-sm font-medium text-gray-700 mb-3">
+              <div className="mt-6 border-t dark:border-gray-600 pt-4">
+                <p className="text-sm font-medium text-gray-700 mb-3 dark:text-gray-300">
                   Schedule a Task
                 </p>
 
@@ -381,12 +394,12 @@ transition
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
                   placeholder="What needs to be done?"
-                  className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+                  className="w-full p-3 rounded-xl border border-gray-200 dark:text-gray-300 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
                 />
 
                 <button
                   onClick={addTaskHandler}
-                  className="w-full mt-3 bg-purple-500 hover:bg-purple-600 text-white py-2.5 rounded-xl transition"
+                  className="w-full mt-3 bg-purple-500 hover:bg-purple-600 text-white  py-2.5 rounded-xl transition"
                 >
                   Schedule Task
                 </button>

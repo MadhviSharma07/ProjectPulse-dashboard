@@ -77,25 +77,27 @@ function Projects() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F8F2FC] p-6">
+    <div className="min-h-screen bg-[#F8F2FC] dark:bg-zinc-700/50 p-6">
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4 md:mb-8">
-        <h1 className="text-2xl font-semibold text-gray-800">My Projects</h1>
+        <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
+          My Projects
+        </h1>
         <Button content="New Project" onClick={() => setShowModal(true)} />
       </div>
 
       {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-5 md:px-0">
-          <div className="bg-white p-6 rounded-xl w-96">
-            <h2 className="text-lg font-semibold mb-4">Create Project</h2>
+          <div className="bg-white p-6 rounded-xl w-96 dark:bg-zinc-800  border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
+            <h2 className="text-lg font-semibold mb-4 dark:text-white">Create Project</h2>
 
             <input
               type="text"
               placeholder="Project Name"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
-              className="w-full p-2 border rounded mb-3"
+              className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
             />
 
             {taskInputs.map((task, i) => (
@@ -105,7 +107,7 @@ function Projects() {
                 placeholder={`Task ${i + 1}`}
                 value={task}
                 onChange={(e) => handleTaskChange(i, e.target.value)}
-                className="w-full p-2 border rounded mb-2"
+                className="w-full p-2 border rounded mb-2 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
               />
             ))}
 
@@ -119,6 +121,7 @@ function Projects() {
             <div className="flex justify-end gap-2">
               <Button
                 onClick={() => setShowModal(false)}
+                variant="secondary"
                 content="Cancel"
                 className=" bg-zinc-700 hover:bg-zinc-800"
               />
@@ -135,7 +138,7 @@ function Projects() {
           placeholder="Search projects..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-2 rounded-xl border bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="w-full p-2 rounded-xl border bg-white dark:bg-zinc-300  dark:border-purple-400/40 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
       </div>
 
@@ -147,10 +150,11 @@ function Projects() {
           return (
             <div
               key={i}
-              className="cursor-pointer bg-white/80 backdrop-blur-md p-5 rounded-2xl shadow-xl hover:shadow-xl/20 transition-all"
+              className="cursor-pointer bg-white/80  dark:bg-zinc-800/60 border border-transparent  dark:border-purple-400/40
+    hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300 backdrop-blur-md p-5 rounded-2xl shadow-xl hover:shadow-xl/20 transition-all"
             >
               <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
                   {proj.name}
                 </h2>
 
@@ -159,11 +163,11 @@ function Projects() {
                     e.stopPropagation();
                     handleDeleteProject(proj.name);
                   }}
-                  className="text-xl text-gray-500 hover:text-red-500 cursor-pointer"
+                  className="text-xl text-gray-500 dark:text-gray-400 hover:text-red-500 cursor-pointer"
                 />
               </div>
 
-              <p className="text-sm text-gray-500 mb-3">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
                 {proj.tasks.length} Tasks
               </p>
 
@@ -173,8 +177,7 @@ function Projects() {
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
-
-              <p className="text-sm text-gray-600 mt-2">
+              <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
                 {progress}% completed
               </p>
             </div>

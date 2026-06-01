@@ -1,4 +1,6 @@
 import { useLogout } from "../context/LogoutContext";
+import Button from "../Other components/Button";
+import { FiLogOut } from "react-icons/fi";
 
 function Logout() {
   const { showLogout, setShowLogout } = useLogout();
@@ -6,48 +8,49 @@ function Logout() {
   if (!showLogout) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center ">
       {/* 🔹 Background Blur */}
       <div
-        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/30 backdrop-blur-sm "
         onClick={() => setShowLogout(false)}
       />
 
       {/* 🔹 Modal */}
-      <div className="relative bg-white rounded-2xl p-6 w-[350px] shadow-xl text-center z-50">
-
-        <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-full bg-red-100 text-red-500 text-xl">
-          ⚠️
+      <div className="relative w-[400px] rounded-3xl bg-white6 dark:bg-zinc-800  border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300 shadow-2xl p-8">
+        {/* Icon */}
+        <div className="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-500/10 flex items-center justify-center mb-6">
+          <FiLogOut className="text-2xl text-purple-600 dark:text-purple-400" />
         </div>
 
-        <h2 className="text-lg font-semibold text-gray-800">
-          Are you sure you want to logout?
+        {/* Content */}
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
+          Logout
         </h2>
 
-        <p className="text-sm text-gray-500 mt-2">
-          You will be logged out from all pages.
+        <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+          Are you sure you want to sign out of your account? Any unsaved changes
+          may be lost.
         </p>
 
-        <div className="flex justify-center gap-4 mt-6">
+        {/* Divider */}
+        <div className="h-px bg-zinc-200 dark:bg-zinc-800 my-3" />
 
-          <button
+        {/* Actions */}
+        <div className="flex justify-end gap-3">
+          <Button
+            content="Cancel"
+            variant="secondary"
             onClick={() => setShowLogout(false)}
-            className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-          >
-            Cancel
-          </button>
+          />
 
-          <button
+          <Button
+            content="Sign Out"
             onClick={() => {
               localStorage.removeItem("user");
               window.location.href = "/login";
             }}
-            className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
-          >
-            Logout
-          </button>
-
+            className="bg-purple-600 hover:bg-purple-700 text-white"
+          />
         </div>
       </div>
     </div>

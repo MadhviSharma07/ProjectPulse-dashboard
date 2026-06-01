@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import {
   Moon,
   Sun,
@@ -13,13 +14,9 @@ import {
 } from "lucide-react";
 import useTasks from "../context/TaskContext";
 
-function Settings() {
+function Settings( ) {
   const { tasks } = useTasks();
-
-  // 🔹 Theme
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("darkMode") === "true";
-  });
+  const   {darkMode, setDarkMode, handleThemeToggle} =useOutletContext();
 
   // 🔹 Notifications
   const [notifications, setNotifications] = useState(() => {
@@ -42,21 +39,21 @@ function Settings() {
     return localStorage.getItem("autosave") !== "false";
   });
 
+  const [showImageMenu, setShowImageMenu] = useState(false);
+
+const removeProfileImage = () => {
+  setProfileImage("");
+  localStorage.removeItem("profileImage");
+  setShowImageMenu(false);
+};
+
   // 🔹 Save Settings
   useEffect(() => {
-    localStorage.setItem("darkMode", darkMode);
     localStorage.setItem("notifications", notifications);
     localStorage.setItem("username", username);
     localStorage.setItem("profileImage", profileImage);
     localStorage.setItem("autosave", autosave);
-
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
   }, [
-    darkMode,
     notifications,
     username,
     autosave,
@@ -107,20 +104,20 @@ function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F2FC] p-6">
+    <div className="min-h-screen bg-[#F8F2FC] p-6 dark:bg-zinc-700/50">
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
             Settings
           </h1>
 
-          <p className="text-gray-500 mt-1 text-sm">
+          <p className="text-gray-500 mt-1 text-sm dark:text-gray-400">
             Customize your productivity workspace
           </p>
         </div>
 
-        <div className="bg-white px-4 py-2 rounded-2xl shadow-sm text-sm text-gray-600">
+        <div className="bg-white px-4 py-2 rounded-2xl shadow-sm text-sm text-gray-400 dark:text-gray-400 dark:bg-zinc-900 dark:hover:bg-zinc-700 transition">
           {tasks.length} tasks stored
         </div>
       </div>
@@ -130,17 +127,18 @@ function Settings() {
         {/* Left Column */}
         <div className="lg:col-span-2 space-y-6">
           {/* Profile */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-white rounded-3xl p-6 shadow-sm dark:bg-zinc-800/60 border border-transparent  dark:border-purple-400/40
+    hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             <div className="flex items-center gap-3 mb-5">
               <div className="p-3 bg-purple-100 rounded-2xl">
                 <User className="text-purple-500" size={22} />
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
                   Profile
                 </h2>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-gray-400">
                   Personalize your dashboard experience
                 </p>
               </div>
@@ -155,19 +153,44 @@ function Settings() {
                       username
                   }
                   alt="profile"
-                  className="w-28 h-28 rounded-full object-cover border-4 border-purple-100 shadow-md"
+                  className="w-28 h-28 rounded-full object-cover border-4 border-purple-100 shadow-md dark:border-purple-400/40 shadow-sm  transition"
                 />
 
-                <label className="absolute bottom-1 right-1 bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-full cursor-pointer transition">
-                  <Upload size={16} />
+               <div className="absolute bottom-1 right-1">
+  <button
+    onClick={() => setShowImageMenu(!showImageMenu)}
+    className="bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-full transition"
+  >
+    <Upload size={16} />
+  </button>
 
-                  <input
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                  />
-                </label>
+  {showImageMenu && (
+    <div className="absolute left-0 bottom-12 w-40 bg-white dark:bg-zinc-600 rounded-xl shadow-lg border border-gray-200 dark:border-zinc-500 overflow-hidden z-50">
+      
+      <label className="block px-4 py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700 text-sm dark:text-gray-300 border-b border-gray-200 dark:border-zinc-700">
+        Choose Image
+        <input
+          type="file"
+          hidden
+          accept="image/*"
+          onChange={(e) => {
+            handleImageUpload(e);
+            setShowImageMenu(false);
+          }}
+        />
+      </label>
+
+      {profileImage && (
+        <button
+          onClick={removeProfileImage}
+          className="w-full text-left px-4 py-3 text-red-500 hover:bg-gray-100 dark:hover:bg-zinc-700 text-sm"
+        >
+          Remove Photo
+        </button>
+      )}
+    </div>
+  )}
+</div>
               </div>
 
               <p className="text-sm text-gray-400 mt-3">
@@ -176,7 +199,7 @@ function Settings() {
             </div>
 
             <div>
-              <label className="text-sm text-gray-500 block mb-2">
+              <label className="text-sm text-gray-500 block mb-2 dark:text-gray-400">
                 Display Name
               </label>
 
@@ -184,25 +207,26 @@ function Settings() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full border border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                className="w-full border border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-300 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
                 placeholder="Your name"
               />
             </div>
           </div>
 
           {/* Appearance */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-white rounded-3xl p-6 shadow-sm dark:bg-zinc-800/60 border border-transparent  dark:border-purple-400/40
+    hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             <div className="flex items-center gap-3 mb-5">
               <div className="p-3 bg-pink-100 rounded-2xl">
                 <Palette className="text-pink-500" size={22} />
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-800  dark:text-white ">
                   Appearance
                 </h2>
-                <p className="text-sm text-gray-400">
-                  Customize theme and colors
+                <p className="text-sm text-gray-400 dark:text-gray-500">
+                  Customize theme
                 </p>
               </div>
             </div>
@@ -210,14 +234,14 @@ function Settings() {
             {/* Theme Toggle */}
             <div className="flex items-center justify-between py-4">
               <div>
-                <p className="font-medium text-gray-700">Dark Mode</p>
-                <p className="text-sm text-gray-400">
+                <p className="font-medium text-gray-700 dark:text-gray-300">Dark Mode</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500 ">
                   Switch between light and dark UI
                 </p>
               </div>
 
               <button
-                onClick={() => setDarkMode(!darkMode)}
+                onClick={(e) => handleThemeToggle(e)}
                 className={`w-14 h-8 rounded-full flex items-center px-1 transition ${
                   darkMode ? "bg-purple-500 justify-end" : "bg-gray-300"
                 }`}
@@ -235,17 +259,18 @@ function Settings() {
           </div>
 
           {/* Notifications */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-white rounded-3xl p-6 shadow-sm   dark:bg-zinc-800/60 border border-transparent  dark:border-purple-400/40
+    hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             <div className="flex items-center gap-3 mb-5">
               <div className="p-3 bg-yellow-100 rounded-2xl">
                 <Bell className="text-yellow-500" size={22} />
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-800  dark:text-white ">
                   Productivity Preferences
                 </h2>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-gray-500">
                   Control reminders and saving behavior
                 </p>
               </div>
@@ -255,10 +280,10 @@ function Settings() {
               {/* Notifications */}
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-gray-700">
+                  <p className="font-medium text-gray-700 dark:text-gray-300">
                     Deadline Notifications
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-400 dark:text-gray-500">
                     Get reminders for upcoming tasks
                   </p>
                 </div>
@@ -278,10 +303,10 @@ function Settings() {
               {/* Autosave */}
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-gray-700">
+                  <p className="font-medium text-gray-700 dark:text-gray-300">
                     Auto Save
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-400 dark:text-gray-500">
                     Automatically save dashboard changes
                   </p>
                 </div>
@@ -304,17 +329,18 @@ function Settings() {
         {/* Right Column */}
         <div className="space-y-6">
           {/* Backup */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-white rounded-3xl p-6 shadow-sm   dark:bg-zinc-800/60 border border-transparent  dark:border-purple-400/40
+    hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             <div className="flex items-center gap-3 mb-5">
               <div className="p-3 bg-blue-100 rounded-2xl">
                 <Shield className="text-blue-500" size={22} />
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-800  dark:text-white ">
                   Backup & Data
                 </h2>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-gray-500">
                   Export or manage your task data
                 </p>
               </div>
@@ -329,7 +355,7 @@ function Settings() {
                 Export Tasks
               </button>
 
-              <button className="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-2xl transition">
+              <button className="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-2xl transition dark:bg-zinc-500 dark:text-white dark:hover:bg-zinc-600">
                 <Upload size={18} />
                 Import Backup
               </button>
@@ -337,17 +363,17 @@ function Settings() {
           </div>
 
           {/* Danger Zone */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-red-100">
+          <div className="bg-white rounded-3xl p-6 shadow-sm border border-red-100  dark:bg-zinc-800/60 dark:border-red-400/40">
             <div className="flex items-center gap-3 mb-5">
               <div className="p-3 bg-red-100 rounded-2xl">
                 <Trash2 className="text-red-500" size={22} />
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-800  dark:text-white ">
                   Danger Zone
                 </h2>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-gray-500">
                   Permanent actions for your workspace
                 </p>
               </div>
@@ -362,7 +388,7 @@ function Settings() {
           </div>
 
           {/* App Info */}
-          <div className="bg-gradient-to-r from-purple-500 to-violet-500 text-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-gradient-to-r from-purple-400 to-purple-500  text-white p-6 rounded-2xl shadow  shadow-sm dark:from-[#370850] dark:to-[#6E15AF] border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
             <h2 className="text-lg font-semibold mb-2">
               Productivity Hub
             </h2>

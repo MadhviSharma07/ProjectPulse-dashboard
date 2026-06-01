@@ -1,1 +1,21 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 250ms;
+}
+
+::view-transition-new(root) {
+  opacity: 0.98;
+  animation: themeFade 250ms ease-out;
+}
+
+@keyframes themeFade {
+  from {
+    opacity: 0.96;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

@@ -51,14 +51,16 @@ function Notes() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F8F2FC] p-6">
+    <div className="min-h-screen bg-[#F8F2FC] dark:bg-zinc-700/50 p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         {/* Title */}
         <div>
-          <h2 className="text-2xl font-semibold text-gray-800">Notes</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+            Notes
+          </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-500 mt-1 dark:text-zinc-400">
             Organize your thoughts and ideas
           </p>
         </div>
@@ -79,6 +81,7 @@ function Notes() {
           focus:outline-none
           focus:ring-2
           focus:ring-purple-400
+          dark:bg-zinc-300  dark:border-purple-400/40
         "
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -96,13 +99,13 @@ function Notes() {
         {filteredNotes.map((note) => (
           <div
             key={note.id}
-            className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition"
+            className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition dark:bg-zinc-800 dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] cursor-pointer"
           >
-            <h2 className="font-semibold text-lg text-gray-800">
+            <h2 className="font-semibold text-lg text-gray-800 dark:text-white">
               {note.title}
             </h2>
 
-            <p className="text-gray-500 text-sm mt-2 line-clamp-3">
+            <p className="text-gray-500 text-sm mt-2 line-clamp-3 dark:text-gray-400">
               {note.content}
             </p>
 
@@ -141,15 +144,15 @@ function Notes() {
       {/* 📝 Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-5 md:px-0">
-          <div className="bg-white p-6 rounded-2xl w-[400px]">
-            <h2 className="text-lg font-semibold mb-4">
+          <div className="bg-white p-6 rounded-2xl w-[400px] dark:bg-zinc-800  border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
+            <h2 className="text-lg font-semibold mb-4 dark:text-white">
               {currentNote?.id ? "Edit Note" : "Add Note"}
             </h2>
 
             <input
               type="text"
               placeholder="Title"
-              className="w-full p-2 border rounded mb-3"
+              className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
               value={currentNote?.title || ""}
               onChange={(e) =>
                 setCurrentNote({ ...currentNote, title: e.target.value })
@@ -158,7 +161,7 @@ function Notes() {
 
             <textarea
               placeholder="Write your note..."
-              className="w-full p-2 border rounded mb-4"
+              className="w-full p-2 border rounded mb-4 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
               rows="4"
               value={currentNote?.content || ""}
               onChange={(e) =>
@@ -169,6 +172,7 @@ function Notes() {
             <div className="flex justify-end gap-3">
               <Button
                 onClick={() => setShowModal(false)}
+                variant="secondary"
                 content="Cancel"
                 className=" bg-zinc-700 hover:bg-zinc-800"
               />
@@ -180,16 +184,16 @@ function Notes() {
       )}
       {selectedNote && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center px-5 md:px-0 z-50">
-          <div className="bg-white p-6 rounded-2xl w-[500px] max-h-[80vh] overflow-hidden">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+          <div className="bg-white p-6 rounded-2xl w-[500px] max-h-[80vh] overflow-hidden dark:bg-zinc-800  border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2 dark:text-white">
               {selectedNote.title}
             </h2>
 
-            <p className="text-xs text-gray-400 mb-4">
+            <p className="text-xs text-gray-400 mb-4 dark:text-gray-400">
               {new Date(selectedNote.createdAt).toLocaleString()}
             </p>
 
-            <p className="text-gray-700 whitespace-normal">
+            <p className="text-gray-700 whitespace-normal dark:text-white">
               {selectedNote.content}
             </p>
 

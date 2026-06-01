@@ -81,10 +81,10 @@ function Tasks() {
   });
 
   return (
-    <div className="min-h-screen bg-[#F8F2FC] p-6">
+    <div className="min-h-screen bg-[#F8F2FC] dark:bg-zinc-700/50 p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-4 md:mb-8">
-        <h1 className="text-2xl font-semibold text-gray-800">My Task</h1>
+        <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">My Task</h1>
         <Button
           onClick={() => setShowInput(true)}
           className="shadow-xl"
@@ -99,7 +99,7 @@ function Tasks() {
           placeholder="Search tasks..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 min-w-[300px] px-4 py-2.5 rounded-xl border border-gray-500 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="flex-1 min-w-[300px] px-4 py-2.5 rounded-xl border border-gray-500 dark:bg-zinc-300  dark:border-purple-400/40 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
 
         {["All", "Completed", "Pending"].map((f) => (
@@ -107,7 +107,7 @@ function Tasks() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-4 py-2 rounded-xl ${
-              filter === f ? "bg-purple-500 text-white" : "bg-white"
+              filter === f ? "bg-purple-500 text-white" : "bg-white dark:bg-zinc-300/30 dark:text-white dark:border-purple-400/40 border border-gray-500 text-sm"
             }`}
           >
             {f}
@@ -115,25 +115,25 @@ function Tasks() {
         ))}
       </div>
 
-      {/* ✅ MODAL */}
+      {/* MODAL */}
       {showInput && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-5 md:px-0">
-          <div className="bg-white p-6 rounded-2xl w-[400px]">
-            <h2 className="text-lg font-semibold mb-4">Add Task</h2>
+          <div className="bg-white p-6 rounded-2xl w-[400px] dark:bg-zinc-800  border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
+            <h2 className="text-lg font-semibold mb-4 dark:text-white">Add Task</h2>
 
             <input
               type="text"
               placeholder="Task title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-2 border mb-3"
+              className="w-full p-2 border mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
             />
 
             <input
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="w-full p-2 border mb-3"
+              className="w-full p-2 border mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
             />
 
             <input
@@ -141,13 +141,13 @@ function Tasks() {
               placeholder="Project"
               value={project}
               onChange={(e) => setProject(e.target.value)}
-              className="w-full p-2 border mb-3"
+              className="w-full p-2 border mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
             />
 
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="w-full p-2 border mb-4"
+              className="w-full p-2 border mb-4 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
             >
               <option value="high">High</option>
               <option value="medium">Medium</option>
@@ -157,8 +157,8 @@ function Tasks() {
             <div className="flex justify-end gap-3">
               <Button
                 onClick={() => setShowInput(false)}
+                variant="secondary"
                 content="Cancel"
-                className=" bg-zinc-700 hover:bg-zinc-800"
               />
               <Button onClick={handleAddTask} content="Add" />
             </div>
@@ -167,7 +167,8 @@ function Tasks() {
       )}
 
       {/* Task List */}
-      <div className="bg-white p-6 rounded-2xl">
+      <div className="bg-white p-6 rounded-2xl  dark:bg-zinc-800/60 border border-transparent  dark:border-purple-400/40
+    ">
         {filteredTasks.length === 0 ? (
           <p className="text-center text-gray-500">No tasks found 🚀</p>
         ) : (
@@ -175,7 +176,7 @@ function Tasks() {
             {filteredTasks.map((task) => (
               <li
                 key={task.id}
-                className="flex justify-between p-3 hover:bg-purple-50"
+                className="flex justify-between p-3 hover:bg-purple-50 hover:dark:bg-purple-600/10 rounded-lg cursor-pointer transition-colors"
               >
                 <div className="flex gap-3">
                   <input
@@ -190,7 +191,7 @@ function Tasks() {
                       className={
                         task.status === "completed"
                           ? "line-through text-gray-400"
-                          : ""
+                          : " dark:text-gray-300"
                       }
                     >
                       {task.title}
@@ -205,10 +206,10 @@ function Tasks() {
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
                       task.priority === "high"
-                        ? "bg-red-100 text-red-800"
+                        ? "bg-red-100 text-red-800  dark:bg-red-600/20 dark:text-red-300/70 "
                         : task.priority === "medium"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
+                          ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-600/20 dark:text-yellow-300/70"
+                          : "bg-green-100 text-green-800 dark:bg-green-600/20 dark:text-green-300/70"
                     }`}
                   >
                     {task.priority}
@@ -218,12 +219,12 @@ function Tasks() {
                       e.stopPropagation();
                       handleEditClick(task);
                     }}
-                    className="text-lg text-gray-500 hover:text-blue-500 cursor-pointer"
+                    className="text-lg text-gray-500 hover:text-blue-500 cursor-pointer dark:text-gray-400"
                   />
 
                   <MdDelete
                     onClick={() => deleteTask(task.id)}
-                    className="cursor-pointer hover:text-red-500 text-xl"
+                    className="cursor-pointer hover:text-red-500 text-xl dark:text-gray-400"
                   />
                 </div>
               </li>
@@ -233,22 +234,22 @@ function Tasks() {
       </div>
       {showEditModal && (
         <div className="fixed inset-0 bg-black/30 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-xl w-96">
-            <h2 className="text-lg font-semibold mb-4">Edit Task</h2>
+          <div className="bg-white p-6 rounded-xl w-96 dark:bg-zinc-800 border border-transparent dark:border-purple-400/30 hover:dark:shadow-[0_0_20px_rgba(192,132,252,0.25)] transition-all duration-300">
+            <h2 className="text-lg font-semibold mb-4 dark:text-white">Edit Task</h2>
 
             {/* Title */}
             <input
               type="text"
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
-              className="w-full p-2 border rounded mb-3"
+              className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
             />
 
             {/* Priority */}
             <select
               value={editPriority}
               onChange={(e) => setEditPriority(e.target.value)}
-              className="w-full p-2 border rounded mb-3"
+              className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -260,14 +261,16 @@ function Tasks() {
               type="date"
               value={editDeadline}
               onChange={(e) => setEditDeadline(e.target.value)}
-              className="w-full p-2 border rounded mb-3"
+              className="w-full p-2 border rounded mb-3 dark:bg-zinc-700/30 dark:text-white dark:border-gray-500"
             />
 
             {/* Buttons */}
             <div className="flex justify-end gap-2">
               <Button
                 onClick={() => setShowEditModal(false)}
+                variant="secondary"
                 content="Cancel"
+                
               />
 
               <Button
