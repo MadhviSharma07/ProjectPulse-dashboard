@@ -39,7 +39,7 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
       shadow-[0_8px_30px_rgba(0,0,0,0.06)]
       transition-all duration-300
       flex flex-col justify-between
-      px-3 py-4`,children:(0,W.jsxs)(`div`,{className:`${e?`items-center`:``} flex flex-col gap-6`,children:[(0,W.jsxs)(`div`,{className:`flex items-center justify-between mb-6`,children:[!e&&(0,W.jsx)(`h1`,{className:`text-xl font-bold text-purple-600 italic`,children:`ProjectPulse`}),(0,W.jsx)(`button`,{onClick:()=>t(!e),className:`\r
+      px-4 py-4`,children:(0,W.jsxs)(`div`,{className:`${e?`items-center`:``} flex flex-col gap-6`,children:[(0,W.jsxs)(`div`,{className:`flex items-center justify-between mb-6`,children:[!e&&(0,W.jsx)(`h1`,{className:`text-xl font-bold text-purple-600 italic`,children:`ProjectPulse`}),(0,W.jsx)(`button`,{onClick:()=>t(!e),className:`\r
             w-11 h-11\r
             rounded-2xl\r
             bg-white\r
@@ -49,7 +49,7 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
             hover:text-white\r
             text-[#4B2991]\r
             flex items-center justify-center\r
-            transition-all duration-300`,children:(0,W.jsx)(uf,{mode:`wait`,children:(0,W.jsx)(om.div,{initial:{opacity:0,x:e?-10:10},animate:{opacity:1,x:0},exit:{opacity:0,x:e?10:-10},transition:{duration:.2},children:e?(0,W.jsx)(fr,{className:`text-2xl`}):(0,W.jsx)(pr,{className:`text-2xl`})},e?`right`:`left`)})})]}),(0,W.jsx)(`div`,{className:`flex flex-col gap-3`,children:o.map((t,n)=>{let r=a.pathname===t.path;return t.action===`logout`?(0,W.jsxs)(`button`,{onClick:()=>i(!0),className:`
+            transition-all duration-300`,children:(0,W.jsx)(uf,{mode:`wait`,children:(0,W.jsx)(om.div,{initial:{opacity:0,x:e?-10:10},animate:{opacity:1,x:0},exit:{opacity:0,x:e?10:-10},transition:{duration:.2},children:e?(0,W.jsx)(fr,{className:`text-2xl`}):(0,W.jsx)(pr,{className:`text-2xl`})},e?`right`:`left`)})})]}),(0,W.jsx)(`div`,{className:`flex flex-col gap-[0.5px]`,children:o.map((t,n)=>{let r=a.pathname===t.path;return t.action===`logout`?(0,W.jsxs)(`button`,{onClick:()=>i(!0),className:`
           relative flex items-center
           ${e?`justify-center`:`gap-4`}
 
@@ -72,7 +72,7 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
     relative flex items-center
     ${e?`justify-center`:`gap-4`}
 
-    px-3 py-3
+    px-3 py-2
     min-h-[56px]
     rounded-2xl
 
@@ -87,7 +87,7 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
     hover:shadow-md
   `,children:[r&&(0,W.jsx)(om.div,{layoutId:`activeBubble`,transition:{type:`spring`,stiffness:280,damping:20},className:`
         absolute
-         ${e?`left-1/2 -translate-x-1/2 w-12 h-12 rounded-full`:`left-0 right-0 h-full rounded-2xl`}
+         ${e?`left-1/2 -translate-x-1/2 w-12 h-12 rounded-full`:`left-[-1px] right-0 h-full rounded-2xl`}
 
         w-12
         h-12
