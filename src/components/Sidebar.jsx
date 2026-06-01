@@ -101,7 +101,7 @@ function Sidebar({
       shadow-[0_8px_30px_rgba(0,0,0,0.06)]
       transition-all duration-300
       flex flex-col justify-between
-      px-3 py-4`}
+      px-4 py-4`}
     >
       {/* TOP */}
       <div
@@ -160,7 +160,7 @@ function Sidebar({
 
         {/* MENU */}
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-[0.5px]">
           {menuItems.map((item, index) => {
             const active = location.pathname === item.path;
 
@@ -207,7 +207,7 @@ function Sidebar({
     relative flex items-center
     ${isCollapsed ? "justify-center" : "gap-4"}
 
-    px-3 py-3
+    px-3 py-2
     min-h-[56px]
     rounded-2xl
 
@@ -235,7 +235,7 @@ function Sidebar({
          ${
         isCollapsed
           ? "left-1/2 -translate-x-1/2 w-12 h-12 rounded-full"
-          : "left-0 right-0 h-full rounded-2xl"
+          : "left-[-1px] right-0 h-full rounded-2xl"
       }
 
         w-12
